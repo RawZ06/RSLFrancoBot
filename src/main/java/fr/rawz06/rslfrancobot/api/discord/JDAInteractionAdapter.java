@@ -1,0 +1,267 @@
+package fr.rawz06.rslfrancobot.api.discord;
+
+import fr.rawz06.rslfrancobot.bot.models.DiscordButton;
+import fr.rawz06.rslfrancobot.bot.models.DiscordInteraction;
+import fr.rawz06.rslfrancobot.bot.models.DiscordMessage;
+import fr.rawz06.rslfrancobot.bot.models.DiscordSelectMenu;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
+import net.dv8tion.jda.api.interactions.InteractionHook;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
+import net.dv8tion.jda.api.utils.FileUpload;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * Adaptateur JDA pour les interactions Discord.
+ * Traduit les événements JDA en notre abstraction DiscordInteraction.
+ */
+public class JDAInteractionAdapter implements DiscordInteraction {
+
+    private final Object event; // ButtonInteractionEvent ou StringSelectInteractionEvent
+    private final String userId;
+    private final String username;
+    private final String channelId;
+    private final String customId;
+    private final List<String> selectedValues;
+
+    // Stockage temporaire des données utilisateur (par userId)
+    private static final Map<String, Map<String, Object>> userDataStore = new ConcurrentHashMap<>();
+
+    private JDAInteractionAdapter(Object event, String userId, String username, String channelId,
+                                   String customId, List<String> selectedValues) {
+        this.event = event;
+        this.userId = userId;
+        this.username = username;
+        this.channelId = channelId;
+        this.customId = customId;
+        this.selectedValues = selectedValues;
+    }
+
+    public static JDAInteractionAdapter fromButtonEvent(ButtonInteractionEvent event) {
+        return new JDAInteractionAdapter(
+                event,
+                event.getUser().getId(),
+                event.getUser().getName(),
+                event.getChannel().getId(),
+                event.getComponentId(),
+                List.of()
+        );
+    }
+
+    public static JDAInteractionAdapter fromSelectMenuEvent(StringSelectInteractionEvent event) {
+        return new JDAInteractionAdapter(
+                event,
+                event.getUser().getId(),
+                event.getUser().getName(),
+                event.getChannel().getId(),
+                event.getComponentId(),
+                event.getValues()
+        );
+    }
+
+    @Override
+    public String getUserId() {
+        return userId;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public String getChannelId() {
+        return channelId;
+    }
+
+    @Override
+    public List<String> getSelectedValues() {
+        return selectedValues;
+    }
+
+    @Override
+    public String getCustomId() {
+        return customId;
+    }
+
+    @Override
+    public void reply(DiscordMessage message) {
+        if (event instanceof ButtonInteractionEvent buttonEvent) {
+            sendMessageToJDA(buttonEvent, message);
+        } else if (event instanceof StringSelectInteractionEvent selectEvent) {
+            sendMessageToJDA(selectEvent, message);
+        }
+    }
+
+    @Override
+    public void deferAndReply(DiscordMessage message) {
+        if (event instanceof ButtonInteractionEvent buttonEvent) {
+            buttonEvent.deferReply().queue(hook ->
+                sendEditedMessage(hook, message)
+            );
+        } else if (event instanceof StringSelectInteractionEvent selectEvent) {
+            selectEvent.deferReply().queue(hook ->
+                sendEditedMessage(hook, message)
+            );
+        }
+    }
+
+    private InteractionHook deferredHook;
+
+    @Override
+    public void defer() {
+        // Bloquer jusqu'à ce que le defer soit complété (synchrone)
+        if (event instanceof ButtonInteractionEvent buttonEvent) {
+            this.deferredHook = buttonEvent.deferReply().complete();
+        } else if (event instanceof StringSelectInteractionEvent selectEvent) {
+            this.deferredHook = selectEvent.deferReply().complete();
+        }
+    }
+
+    @Override
+    public void editDeferredReply(DiscordMessage message) {
+        if (deferredHook != null) {
+            sendEditedMessage(deferredHook, message);
+        } else {
+            throw new IllegalStateException("No deferred reply to edit. Call defer() first.");
+        }
+    }
+
+    @Override
+    public void sendFile(String filename, byte[] content, String mimeType) {
+        if (event instanceof ButtonInteractionEvent buttonEvent) {
+            buttonEvent.deferReply().queue(hook ->
+                hook.sendFiles(FileUpload.fromData(content, filename)).queue()
+            );
+        } else if (event instanceof StringSelectInteractionEvent selectEvent) {
+            selectEvent.deferReply().queue(hook ->
+                hook.sendFiles(FileUpload.fromData(content, filename)).queue()
+            );
+        }
+    }
+
+    @Override
+    public void storeUserData(String key, Object value) {
+        userDataStore.computeIfAbsent(userId, k -> new ConcurrentHashMap<>())
+                .put(key, value);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getUserData(String key, Class<T> type) {
+        Map<String, Object> userData = userDataStore.get(userId);
+        if (userData == null) {
+            return null;
+        }
+        return (T) userData.get(key);
+    }
+
+    @Override
+    public Map<String, Object> getAllUserData() {
+        return userDataStore.getOrDefault(userId, Map.of());
+    }
+
+    private void sendMessageToJDA(ButtonInteractionEvent event, DiscordMessage message) {
+        var reply = event.reply(message.getContent())
+                .setEphemeral(message.isEphemeral());
+
+        addComponentsToReply(reply, message);
+        reply.queue();
+    }
+
+    private void sendMessageToJDA(StringSelectInteractionEvent event, DiscordMessage message) {
+        var reply = event.reply(message.getContent())
+                .setEphemeral(message.isEphemeral());
+
+        addComponentsToReply(reply, message);
+        reply.queue();
+    }
+
+    private void sendEditedMessage(InteractionHook hook, DiscordMessage message) {
+        var editAction = hook.editOriginal(message.getContent());
+
+        // Convertir les composants
+        List<ActionRow> actionRows = new ArrayList<>();
+
+        if (!message.getButtons().isEmpty()) {
+            List<Button> buttons = message.getButtons().stream()
+                    .map(this::convertButton)
+                    .toList();
+            actionRows.add(ActionRow.of(buttons));
+        }
+
+        if (!message.getSelectMenus().isEmpty()) {
+            for (DiscordSelectMenu menu : message.getSelectMenus()) {
+                actionRows.add(ActionRow.of(convertSelectMenu(menu)));
+            }
+        }
+
+        if (!actionRows.isEmpty()) {
+            editAction.setComponents(actionRows);
+        } else {
+            editAction.setComponents(); // Clear components
+        }
+
+        editAction.queue();
+    }
+
+    private void addComponentsToReply(Object reply, DiscordMessage message) {
+        List<ActionRow> actionRows = new ArrayList<>();
+
+        if (!message.getButtons().isEmpty()) {
+            List<Button> buttons = message.getButtons().stream()
+                    .map(this::convertButton)
+                    .toList();
+            actionRows.add(ActionRow.of(buttons));
+        }
+
+        if (!message.getSelectMenus().isEmpty()) {
+            for (DiscordSelectMenu menu : message.getSelectMenus()) {
+                actionRows.add(ActionRow.of(convertSelectMenu(menu)));
+            }
+        }
+
+        if (!actionRows.isEmpty()) {
+            if (reply instanceof net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction replyAction) {
+                replyAction.addComponents(actionRows);
+            }
+        }
+    }
+
+    private Button convertButton(DiscordButton button) {
+        ButtonStyle style = switch (button.style()) {
+            case PRIMARY -> ButtonStyle.PRIMARY;
+            case SECONDARY -> ButtonStyle.SECONDARY;
+            case SUCCESS -> ButtonStyle.SUCCESS;
+            case DANGER -> ButtonStyle.DANGER;
+        };
+
+        return Button.of(style, button.customId(), button.label());
+    }
+
+    private StringSelectMenu convertSelectMenu(DiscordSelectMenu menu) {
+        StringSelectMenu.Builder builder = StringSelectMenu.create(menu.getCustomId());
+
+        if (menu.getPlaceholder() != null) {
+            builder.setPlaceholder(menu.getPlaceholder());
+        }
+
+        builder.setMinValues(menu.getMinValues());
+        builder.setMaxValues(menu.getMaxValues());
+
+        for (DiscordSelectMenu.SelectOption option : menu.getOptions()) {
+            if (option.description() != null) {
+                builder.addOption(option.label(), option.value(), option.description());
+            } else {
+                builder.addOption(option.label(), option.value());
+            }
+        }
+
+        return builder.build();
+    }
+}
