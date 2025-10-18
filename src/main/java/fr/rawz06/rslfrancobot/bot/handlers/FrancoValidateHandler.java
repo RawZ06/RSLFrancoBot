@@ -58,8 +58,8 @@ public class FrancoValidateHandler {
                     userSettings
             );
 
-            // Edit with final result
-            interaction.editDeferredReply(presenter.presentSeedResult(result));
+            // Edit with final result including selected options
+            interaction.editDeferredReply(presenter.presentFrancoSeedResult(result, selectedOptions));
         } catch (SeedService.SeedGenerationException e) {
             interaction.editDeferredReply(presenter.presentError(e.getMessage()));
         } catch (InterruptedException e) {

@@ -28,15 +28,40 @@ public class SeedPresenter {
     }
 
     /**
-     * Presents the result of a generated seed.
+     * Presents the result of a generated seed (RSL/PoT mode).
      */
-    public DiscordMessage presentSeedResult(SeedResult result) {
+    public DiscordMessage presentSeedResult(SeedResult result, String seedType) {
         StringBuilder content = new StringBuilder();
-        content.append("✅ Seed generated successfully!\n\n");
+        content.append("✅ Seed ").append(seedType).append(" generated successfully!\n\n");
         content.append("🔗 Link: ").append(result.seedUrl()).append("\n");
 
         if (result.seedHash() != null && !result.seedHash().isEmpty()) {
             content.append("🔑 Hash: ").append(result.seedHash());
+        }
+
+        return new DiscordMessage(content.toString());
+    }
+
+    /**
+     * Presents the result of a generated Franco seed with selected options.
+     */
+    public DiscordMessage presentFrancoSeedResult(SeedResult result, List<String> selectedOptions) {
+        StringBuilder content = new StringBuilder();
+        content.append("✅ Seed Franco generated successfully!\n\n");
+        content.append("🔗 Link: ").append(result.seedUrl()).append("\n");
+
+        if (result.seedHash() != null && !result.seedHash().isEmpty()) {
+            content.append("🔑 Hash: ").append(result.seedHash()).append("\n");
+        }
+
+        // Add selected settings
+        content.append("\n🔧 **Settings used:**\n");
+        if (selectedOptions == null || selectedOptions.isEmpty()) {
+            content.append("_Base preset only (no specific options)_");
+        } else {
+            for (String optionId : selectedOptions) {
+                content.append("• ").append(optionId).append("\n");
+            }
         }
 
         return new DiscordMessage(content.toString());
@@ -68,6 +93,7 @@ public class SeedPresenter {
 
         // Add validation buttons
         message.addButton("Validate & Generate", "franco_validate", DiscordButton.Style.SUCCESS);
+        message.addButton("Random Selection", "franco_random", DiscordButton.Style.PRIMARY);
         message.addButton("Cancel", "franco_cancel", DiscordButton.Style.SECONDARY);
 
         return message;

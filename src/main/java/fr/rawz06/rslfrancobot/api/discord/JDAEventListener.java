@@ -24,6 +24,7 @@ public class JDAEventListener extends ListenerAdapter {
     private final PoTButtonHandler potButtonHandler;
     private final FrancoValidateHandler francoValidateHandler;
     private final FrancoSelectMenuHandler francoSelectMenuHandler;
+    private final FrancoRandomHandler francoRandomHandler;
 
     public JDAEventListener(
             SeedCommandHandler seedCommandHandler,
@@ -31,7 +32,8 @@ public class JDAEventListener extends ListenerAdapter {
             RSLButtonHandler rslButtonHandler,
             PoTButtonHandler potButtonHandler,
             FrancoValidateHandler francoValidateHandler,
-            FrancoSelectMenuHandler francoSelectMenuHandler
+            FrancoSelectMenuHandler francoSelectMenuHandler,
+            FrancoRandomHandler francoRandomHandler
     ) {
         this.seedCommandHandler = seedCommandHandler;
         this.francoButtonHandler = francoButtonHandler;
@@ -39,6 +41,7 @@ public class JDAEventListener extends ListenerAdapter {
         this.potButtonHandler = potButtonHandler;
         this.francoValidateHandler = francoValidateHandler;
         this.francoSelectMenuHandler = francoSelectMenuHandler;
+        this.francoRandomHandler = francoRandomHandler;
     }
 
     @Override
@@ -65,11 +68,24 @@ public class JDAEventListener extends ListenerAdapter {
         try {
             var interaction = JDAInteractionAdapter.fromButtonEvent(event);
 
+            // Handle random selection buttons
+            if (buttonId.startsWith("franco_random_")) {
+                String countStr = buttonId.substring("franco_random_".length());
+                try {
+                    int count = Integer.parseInt(countStr);
+                    francoRandomHandler.handleWithCount(interaction, count);
+                } catch (NumberFormatException e) {
+                    event.reply("❌ Invalid number format.").setEphemeral(true).queue();
+                }
+                return;
+            }
+
             switch (buttonId) {
                 case "seed_franco" -> francoButtonHandler.handle(interaction);
                 case "seed_rsl" -> rslButtonHandler.handle(interaction);
                 case "seed_pot" -> potButtonHandler.handle(interaction);
                 case "franco_validate" -> francoValidateHandler.handle(interaction);
+                case "franco_random" -> francoRandomHandler.showNumberSelection(interaction);
                 case "franco_cancel" -> event.reply("Generation cancelled.").setEphemeral(true).queue();
                 default -> event.reply("Unknown button: " + buttonId).setEphemeral(true).queue();
             }

@@ -37,7 +37,7 @@ public class RSLButtonHandler {
             );
 
             // Edit deferred reply with result
-            interaction.editDeferredReply(presenter.presentSeedResult(result));
+            interaction.editDeferredReply(presenter.presentSeedResult(result, "RSL"));
         } catch (SeedService.SeedGenerationException e) {
             interaction.editDeferredReply(presenter.presentError(e.getMessage()));
         }

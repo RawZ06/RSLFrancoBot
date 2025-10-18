@@ -37,7 +37,7 @@ public class PoTButtonHandler {
             );
 
             // Edit deferred reply with result
-            interaction.editDeferredReply(presenter.presentSeedResult(result));
+            interaction.editDeferredReply(presenter.presentSeedResult(result, "PoT"));
         } catch (SeedService.SeedGenerationException e) {
             interaction.editDeferredReply(presenter.presentError(e.getMessage()));
         }
