@@ -34,3 +34,6 @@ build/
 
 ### Dev properties
 **/application-dev.properties
+
+**/.DS_Store
+plando-random-settings

@@ -207,5 +207,55 @@
   "junk_ice_traps": "off",
   "custom_ice_trap_percent": 50,
   "custom_ice_trap_count": 100,
-  "ice_trap_appearance": "anything"
+  "ice_trap_appearance": "anything",
+  "hint_dist_user": {
+    "name":                  "Tournoi FR",
+    "gui_name":              "Tournoi FR",
+    "description":           "Hint Distribution for the 5th season of the Francophone Tournament.",
+    "add_locations":         [
+      { "location": "Sheik in Kakariko", "types": ["always"] },
+      { "location": "Deku Tree GS Basement Back Room", "types": ["always"] },
+      { "location": "DMC Deku Scrub", "types": ["always"] }
+    ],
+    "remove_locations":      [
+      { "location": "Song from Royal Familys Tomb", "types": ["sometimes"] },
+      { "location": "Sheik in Forest", "types": ["sometimes"] },
+      { "location": "Sheik at Temple", "types": ["sometimes"] },
+      { "location": "Sheik in Crater", "types": ["sometimes"] },
+      { "location": "Sheik at Colossus", "types": ["sometimes"] },
+      { "location": "Ice Cavern Iron Boots Chest", "types": ["sometimes"] },
+      { "location": "GC Maze Left Chest", "types": ["sometimes"] },
+      { "location": "GV Chest", "types": ["sometimes"] },
+      { "location": "HC Great Fairy Reward", "types": ["sometimes"] },
+      { "location": "OGC Great Fairy Reward", "types": ["sometimes"] },
+      { "location": "Gerudo Training Ground Maze Path Final Chest", "types": ["sometimes"] }
+    ],
+    "add_items":             [],
+    "remove_items":          [
+      { "item": "Zeldas Lullaby", "types": ["goal"] },
+      { "item": "Light Arrows", "types": ["goal"] }
+    ],
+    "dungeons_barren_limit": 1,
+    "one_hint_per_goal":     true,
+    "named_items_required":  true,
+    "vague_named_items":     false,
+    "use_default_goals":     true,
+    "distribution":          {
+      "trial":      {"order":  1, "weight": 0.0, "fixed":   0, "copies": 2},
+      "always":     {"order":  3, "weight": 0.0, "fixed":   0, "copies": 2},
+      "goal":       {"order":  5, "weight": 0.0, "fixed":   5, "copies": 2},
+      "barren":     {"order":  4, "weight": 0.0, "fixed":   3, "copies": 2},
+      "entrance":   {"order":  2, "weight": 0.0, "fixed":   4, "copies": 2},
+      "sometimes":  {"order":  6, "weight": 0.0, "fixed": 100, "copies": 2},
+      "dual":       {"order":  7, "weight": 0.0, "fixed":   0, "copies": 2},
+      "random":     {"order":  8, "weight": 9.0, "fixed":   0, "copies": 2},
+      "woth":       {"order":  9, "weight": 0.0, "fixed":   0, "copies": 2},
+      "item":       {"order":  0, "weight": 0.0, "fixed":   0, "copies": 2},
+      "song":       {"order":  0, "weight": 0.0, "fixed":   0, "copies": 2},
+      "overworld":  {"order":  0, "weight": 0.0, "fixed":   0, "copies": 2},
+      "dungeon":    {"order":  0, "weight": 0.0, "fixed":   0, "copies": 2},
+      "junk":       {"order":  0, "weight": 0.0, "fixed":   0, "copies": 2},
+      "named-item": {"order":  0, "weight": 0.0, "fixed":   0, "copies": 2}
+    }
+  }
 }
