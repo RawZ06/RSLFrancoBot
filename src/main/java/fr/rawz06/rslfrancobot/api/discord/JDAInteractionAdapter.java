@@ -17,19 +17,19 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Adaptateur JDA pour les interactions Discord.
- * Traduit les événements JDA en notre abstraction DiscordInteraction.
+ * JDA adapter for Discord interactions.
+ * Translates JDA events into our DiscordInteraction abstraction.
  */
 public class JDAInteractionAdapter implements DiscordInteraction {
 
-    private final Object event; // ButtonInteractionEvent ou StringSelectInteractionEvent
+    private final Object event; // ButtonInteractionEvent or StringSelectInteractionEvent
     private final String userId;
     private final String username;
     private final String channelId;
     private final String customId;
     private final List<String> selectedValues;
 
-    // Stockage temporaire des données utilisateur (par userId)
+    // Temporary user data storage (by userId)
     private static final Map<String, Map<String, Object>> userDataStore = new ConcurrentHashMap<>();
 
     private JDAInteractionAdapter(Object event, String userId, String username, String channelId,
@@ -115,7 +115,7 @@ public class JDAInteractionAdapter implements DiscordInteraction {
 
     @Override
     public void defer() {
-        // Bloquer jusqu'à ce que le defer soit complété (synchrone)
+        // Block until defer is completed (synchronous)
         if (event instanceof ButtonInteractionEvent buttonEvent) {
             this.deferredHook = buttonEvent.deferReply().complete();
         } else if (event instanceof StringSelectInteractionEvent selectEvent) {
@@ -185,7 +185,7 @@ public class JDAInteractionAdapter implements DiscordInteraction {
     private void sendEditedMessage(InteractionHook hook, DiscordMessage message) {
         var editAction = hook.editOriginal(message.getContent());
 
-        // Convertir les composants
+        // Convert components
         List<ActionRow> actionRows = new ArrayList<>();
 
         if (!message.getButtons().isEmpty()) {

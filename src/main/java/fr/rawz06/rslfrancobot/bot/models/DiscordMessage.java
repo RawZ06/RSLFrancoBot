@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Représente un message Discord à envoyer.
- * Abstraction découplée de JDA.
+ * Represents a Discord message to send.
+ * Abstraction decoupled from JDA.
  */
 public class DiscordMessage {
     private String content;

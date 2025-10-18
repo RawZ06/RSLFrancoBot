@@ -5,8 +5,8 @@ import fr.rawz06.rslfrancobot.bot.presenters.SeedPresenter;
 import org.springframework.stereotype.Component;
 
 /**
- * Handler pour la commande /seed.
- * Affiche les boutons de sélection du mode.
+ * Handler for the /seed command.
+ * Displays mode selection buttons.
  */
 @Component
 public class SeedCommandHandler {

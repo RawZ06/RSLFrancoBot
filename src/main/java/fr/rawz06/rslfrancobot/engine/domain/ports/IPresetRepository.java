@@ -5,24 +5,24 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.Preset;
 import java.util.Optional;
 
 /**
- * Port pour l'accès aux presets de configuration.
- * Abstraction du stockage des presets (YAML, JSON, BDD, etc.).
- * Implémenté dans l'API Layer.
+ * Port for accessing configuration presets.
+ * Abstraction of preset storage (YAML, JSON, DB, etc.).
+ * Implemented in the API Layer.
  */
 public interface IPresetRepository {
     /**
-     * Récupère un preset par son nom.
+     * Retrieves a preset by name.
      *
-     * @param name Le nom du preset (franco, rsl, pot)
-     * @return Le preset si trouvé
+     * @param name Preset name (franco, rsl, pot)
+     * @return The preset if found
      */
     Optional<Preset> getPreset(String name);
 
     /**
-     * Vérifie si un preset existe.
+     * Checks if a preset exists.
      *
-     * @param name Le nom du preset
-     * @return true si le preset existe
+     * @param name Preset name
+     * @return true if the preset exists
      */
     boolean presetExists(String name);
 }

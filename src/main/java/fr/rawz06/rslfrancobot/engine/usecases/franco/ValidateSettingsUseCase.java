@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Use Case : Valide la cohérence des settings utilisateur pour le mode Franco.
- * Vérifie les incompatibilités entre les options sélectionnées.
+ * Use Case: Validates the consistency of user settings for Franco mode.
+ * Checks incompatibilities between selected options.
  */
 @Component
 public class ValidateSettingsUseCase {
@@ -23,17 +23,17 @@ public class ValidateSettingsUseCase {
 
         List<String> errors = new ArrayList<>();
 
-        // Construire une map des options pour accès rapide
+        // Build options map for quick access
         Map<String, Preset.PresetOption> optionsMap = preset.availableOptions().stream()
                 .collect(java.util.stream.Collectors.toMap(
                         Preset.PresetOption::id,
                         option -> option
                 ));
 
-        // Vérifier que toutes les options sélectionnées existent
+        // Verify all selected options exist
         for (String selectedId : selectedOptionIds) {
             if (!optionsMap.containsKey(selectedId)) {
-                errors.add("Option inconnue : " + selectedId);
+                errors.add("Unknown option: " + selectedId);
             }
         }
 
@@ -41,7 +41,7 @@ public class ValidateSettingsUseCase {
             return ValidationResult.failure(errors);
         }
 
-        // Vérifier les incompatibilités
+        // Check incompatibilities
         Set<String> selectedSet = Set.copyOf(selectedOptionIds);
 
         for (String selectedId : selectedOptionIds) {
@@ -53,7 +53,7 @@ public class ValidateSettingsUseCase {
                     if (selectedSet.contains(incompatibleId)) {
                         String incompatibleLabel = optionsMap.get(incompatibleId).label();
                         errors.add(String.format(
-                                "Incompatibilité détectée : '%s' n'est pas compatible avec '%s'",
+                                "Incompatibility detected: '%s' is not compatible with '%s'",
                                 option.label(),
                                 incompatibleLabel
                         ));

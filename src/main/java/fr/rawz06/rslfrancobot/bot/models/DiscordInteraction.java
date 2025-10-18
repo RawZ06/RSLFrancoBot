@@ -4,73 +4,73 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Représente une interaction Discord abstraite.
- * Découplée de JDA, permet de tester les handlers sans dépendre de Discord.
+ * Represents an abstract Discord interaction.
+ * Decoupled from JDA, allows testing handlers without depending on Discord.
  */
 public interface DiscordInteraction {
     /**
-     * @return L'ID de l'utilisateur qui a déclenché l'interaction
+     * @return The ID of the user who triggered the interaction
      */
     String getUserId();
 
     /**
-     * @return Le nom d'utilisateur Discord
+     * @return The Discord username
      */
     String getUsername();
 
     /**
-     * @return L'ID du channel Discord
+     * @return The Discord channel ID
      */
     String getChannelId();
 
     /**
-     * @return Les valeurs sélectionnées dans un menu (si applicable)
+     * @return Values selected in a menu (if applicable)
      */
     List<String> getSelectedValues();
 
     /**
-     * @return Les données custom attachées au bouton/interaction (si applicable)
+     * @return Custom data attached to the button/interaction (if applicable)
      */
     String getCustomId();
 
     /**
-     * Répond à l'interaction avec un message.
+     * Responds to the interaction with a message.
      */
     void reply(DiscordMessage message);
 
     /**
-     * Répond en mode "defer" puis met à jour avec un message.
+     * Responds in "defer" mode then updates with a message.
      */
     void deferAndReply(DiscordMessage message);
 
     /**
-     * Defer la réponse (affiche "Bot is thinking...").
-     * Utilisé quand le traitement va prendre du temps.
+     * Defers the response (displays "Bot is thinking...").
+     * Used when processing will take time.
      */
     void defer();
 
     /**
-     * Édite la réponse différée après un defer().
+     * Edits the deferred response after a defer().
      */
     void editDeferredReply(DiscordMessage message);
 
     /**
-     * Envoie un fichier en réponse.
+     * Sends a file in response.
      */
     void sendFile(String filename, byte[] content, String mimeType);
 
     /**
-     * Stocke temporairement des données pour cet utilisateur.
+     * Temporarily stores data for this user.
      */
     void storeUserData(String key, Object value);
 
     /**
-     * Récupère des données stockées pour cet utilisateur.
+     * Retrieves stored data for this user.
      */
     <T> T getUserData(String key, Class<T> type);
 
     /**
-     * Obtient toutes les données utilisateur stockées.
+     * Gets all stored user data.
      */
     Map<String, Object> getAllUserData();
 }

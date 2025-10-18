@@ -7,8 +7,8 @@ import fr.rawz06.rslfrancobot.engine.domain.ports.IRSLScriptRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * Use Case : Génère une seed en mode RSL (ou PoT).
- * Utilise le script Python pour générer les settings aléatoires, puis génère la seed.
+ * Use Case: Generates a seed in RSL (or PoT) mode.
+ * Uses the Python script to generate random settings, then generates the seed.
  */
 @Component
 public class GenerateRSLSeedUseCase {
@@ -28,30 +28,30 @@ public class GenerateRSLSeedUseCase {
     }
 
     public SeedResult execute(SeedRequest request) throws GenerationException {
-        // Déterminer le nom du preset en fonction du mode
+        // Determine preset name based on mode
         String presetName = switch (request.mode()) {
             case RSL -> "rsl";
             case POT -> "pot";
-            default -> throw new GenerationException("Mode non supporté pour RSL/PoT : " + request.mode());
+            default -> throw new GenerationException("Unsupported mode for RSL/PoT: " + request.mode());
         };
 
-        // 1. Récupérer le preset
+        // 1. Retrieve preset
         Preset preset = presetRepository.getPreset(presetName)
-                .orElseThrow(() -> new GenerationException("Preset " + presetName + " introuvable"));
+                .orElseThrow(() -> new GenerationException("Preset " + presetName + " not found"));
 
-        // 2. Générer les settings via le script Python
+        // 2. Generate settings via Python script
         SettingsFile generatedSettings;
         try {
             generatedSettings = rslScriptRunner.generateSettings(preset);
         } catch (IRSLScriptRunner.ScriptExecutionException e) {
-            throw new GenerationException("Erreur lors de l'exécution du script RSL", e);
+            throw new GenerationException("Error executing RSL script", e);
         }
 
-        // 3. Générer la seed via l'API
+        // 3. Generate seed via API
         try {
             return randomizerApi.generateSeed(generatedSettings);
         } catch (IRandomizerApi.RandomizerApiException e) {
-            throw new GenerationException("Erreur lors de la génération de la seed", e);
+            throw new GenerationException("Error during seed generation", e);
         }
     }
 

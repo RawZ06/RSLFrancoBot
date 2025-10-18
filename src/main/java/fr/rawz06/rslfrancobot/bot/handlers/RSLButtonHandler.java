@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * Handler pour le bouton RSL.
- * Génère directement une seed RSL (pas d'options utilisateur).
+ * Handler for the RSL button.
+ * Directly generates an RSL seed (no user options).
  */
 @Component
 public class RSLButtonHandler {
@@ -26,17 +26,17 @@ public class RSLButtonHandler {
 
     public void handle(DiscordInteraction interaction) {
         try {
-            // Defer immédiatement car la génération prend du temps (5s simulées)
+            // Defer immediately as generation takes time (5s simulated)
             interaction.defer();
 
-            // Générer la seed (bloquant, simule un appel HTTP lent)
+            // Generate seed (blocking, simulates slow HTTP call)
             SeedResult result = seedService.generateSeed(
                     SeedMode.RSL,
                     interaction.getUserId(),
                     Map.of()
             );
 
-            // Éditer la réponse différée avec le résultat
+            // Edit deferred reply with result
             interaction.editDeferredReply(presenter.presentSeedResult(result));
         } catch (SeedService.SeedGenerationException e) {
             interaction.editDeferredReply(presenter.presentError(e.getMessage()));

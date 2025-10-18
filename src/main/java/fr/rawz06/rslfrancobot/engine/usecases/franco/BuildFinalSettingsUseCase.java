@@ -9,22 +9,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Use Case : Construit le fichier de settings final pour le mode Franco.
- * Fusionne le preset de base avec les options sélectionnées par l'utilisateur.
+ * Use Case: Builds the final settings file for Franco mode.
+ * Merges the base preset with user-selected options.
  */
 @Component
 public class BuildFinalSettingsUseCase {
 
     public SettingsFile execute(Preset preset, List<String> selectedOptionIds) {
-        // Copier les settings de base
+        // Copy base settings
         Map<String, Object> finalSettings = new HashMap<>(preset.baseSettings());
 
-        // Si aucune option sélectionnée, retourner les settings de base
+        // If no options selected, return base settings
         if (selectedOptionIds == null || selectedOptionIds.isEmpty()) {
             return new SettingsFile(finalSettings);
         }
 
-        // Appliquer les options sélectionnées
+        // Apply selected options
         Map<String, Preset.PresetOption> optionsMap = preset.availableOptions().stream()
                 .collect(java.util.stream.Collectors.toMap(
                         Preset.PresetOption::id,
@@ -34,7 +34,7 @@ public class BuildFinalSettingsUseCase {
         for (String selectedId : selectedOptionIds) {
             Preset.PresetOption option = optionsMap.get(selectedId);
             if (option != null && option.settingsToApply() != null) {
-                // Fusionner les settings de cette option
+                // Merge settings from this option
                 finalSettings.putAll(option.settingsToApply());
             }
         }

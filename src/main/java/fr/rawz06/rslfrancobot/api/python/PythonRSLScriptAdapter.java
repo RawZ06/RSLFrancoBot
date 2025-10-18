@@ -19,11 +19,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Implémentation réelle du script Python RSL.
- * Exécute le script RandomSettingsGenerator.py pour générer des settings aléatoires.
+ * Real implementation of the RSL Python script.
+ * Executes RandomSettingsGenerator.py script to generate random settings.
  */
 @Component
-@Primary // Remplace le Mock
+@Primary // Replaces the Mock
 public class PythonRSLScriptAdapter implements IRSLScriptRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(PythonRSLScriptAdapter.class);
@@ -54,11 +54,11 @@ public class PythonRSLScriptAdapter implements IRSLScriptRunner {
     public SettingsFile generateSettings(Preset preset) throws ScriptExecutionException {
         String weightFile = preset.name().equals("rsl") ? rslWeight : potWeight;
 
-        logger.info("Génération de settings {} avec le script Python...", preset.name());
+        logger.info("Generating {} settings with Python script...", preset.name());
         logger.info("Weight file: {}", weightFile);
 
         try {
-            // 1. Préparer la commande
+            // 1. Prepare command
             ProcessBuilder pb = new ProcessBuilder(
                     pythonCommand,
                     scriptName,
@@ -66,7 +66,7 @@ public class PythonRSLScriptAdapter implements IRSLScriptRunner {
                     "--no_seed"
             );
 
-            // Définir le répertoire de travail
+            // Set working directory
             File workingDir = new File(scriptDir);
             if (!workingDir.exists() || !workingDir.isDirectory()) {
                 throw new ScriptExecutionException("Script directory not found: " + scriptDir);
@@ -74,30 +74,30 @@ public class PythonRSLScriptAdapter implements IRSLScriptRunner {
             pb.directory(workingDir);
             pb.redirectErrorStream(true);
 
-            logger.info("Commande: {} dans {}", String.join(" ", pb.command()), workingDir.getAbsolutePath());
+            logger.info("Command: {} in {}", String.join(" ", pb.command()), workingDir.getAbsolutePath());
 
-            // 2. Exécuter le script
+            // 2. Execute script
             Process process = pb.start();
 
-            // 3. Capturer la sortie
+            // 3. Capture output
             String output;
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 output = reader.lines().collect(Collectors.joining("\n"));
             }
 
             int exitCode = process.waitFor();
-            logger.info("Script terminé avec le code: {}", exitCode);
-            logger.debug("Output du script:\n{}", output);
+            logger.info("Script completed with exit code: {}", exitCode);
+            logger.debug("Script output:\n{}", output);
 
             if (exitCode != 0) {
                 throw new ScriptExecutionException("Script failed with exit code " + exitCode + ": " + output);
             }
 
-            // 4. Extraire le nom du fichier généré
+            // 4. Extract generated file name
             String filename = extractFilename(output);
-            logger.info("Fichier généré: {}", filename);
+            logger.info("Generated file: {}", filename);
 
-            // 5. Lire le fichier JSON
+            // 5. Read JSON file
             File generatedFile = new File(workingDir, "data/" + filename);
             if (!generatedFile.exists()) {
                 throw new ScriptExecutionException("Generated file not found: " + generatedFile.getAbsolutePath());
@@ -105,14 +105,14 @@ public class PythonRSLScriptAdapter implements IRSLScriptRunner {
 
             @SuppressWarnings("unchecked")
             Map<String, Object> settings = objectMapper.readValue(generatedFile, Map.class);
-            logger.info("Settings lus avec succès ({} clés)", settings.size());
+            logger.info("Settings read successfully ({} keys)", settings.size());
 
-            // 6. Supprimer le fichier temporaire
+            // 6. Delete temporary file
             boolean deleted = generatedFile.delete();
             if (!deleted) {
-                logger.warn("Impossible de supprimer le fichier temporaire: {}", generatedFile.getAbsolutePath());
+                logger.warn("Unable to delete temporary file: {}", generatedFile.getAbsolutePath());
             } else {
-                logger.debug("Fichier temporaire supprimé: {}", filename);
+                logger.debug("Temporary file deleted: {}", filename);
             }
 
             return new SettingsFile(settings);
@@ -121,14 +121,14 @@ public class PythonRSLScriptAdapter implements IRSLScriptRunner {
             Thread.currentThread().interrupt();
             throw new ScriptExecutionException("Script execution interrupted", e);
         } catch (Exception e) {
-            logger.error("Erreur lors de l'exécution du script Python", e);
+            logger.error("Error executing Python script", e);
             throw new ScriptExecutionException("Python script execution failed: " + e.getMessage(), e);
         }
     }
 
     /**
-     * Extrait le nom du fichier depuis la sortie du script.
-     * Cherche la ligne "Plando File: XXX.json"
+     * Extracts filename from script output.
+     * Looks for the line "Plando File: XXX.json"
      */
     private String extractFilename(String output) throws ScriptExecutionException {
         Matcher matcher = FILENAME_PATTERN.matcher(output);

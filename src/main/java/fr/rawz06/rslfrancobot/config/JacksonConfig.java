@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration Spring pour Jackson ObjectMapper.
- * Fournit un bean ObjectMapper pour la sérialisation/désérialisation JSON.
+ * Spring configuration for Jackson ObjectMapper.
+ * Provides an ObjectMapper bean for JSON serialization/deserialization.
  */
 @Configuration
 public class JacksonConfig {

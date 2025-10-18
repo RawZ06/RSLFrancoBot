@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Handler pour le bouton Franco.
- * Affiche le menu de sélection des options Franco.
+ * Handler for the Franco button.
+ * Displays the Franco options selection menu.
  */
 @Component
 public class FrancoButtonHandler {
@@ -28,7 +28,7 @@ public class FrancoButtonHandler {
             List<Preset.PresetOption> options = seedService.getAvailableOptions("franco");
             interaction.reply(presenter.presentFrancoOptions(options));
         } catch (Exception e) {
-            interaction.reply(presenter.presentError("Impossible de charger les options Franco : " + e.getMessage()));
+            interaction.reply(presenter.presentError("Unable to load Franco options: " + e.getMessage()));
         }
     }
 }

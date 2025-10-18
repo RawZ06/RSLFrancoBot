@@ -44,7 +44,7 @@ public class JDAEventListener extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         String commandName = event.getName();
-        logger.info("Commande reçue : {} par {}", commandName, event.getUser().getName());
+        logger.info("Command received: {} by {}", commandName, event.getUser().getName());
 
         try {
             if ("seed".equals(commandName)) {
@@ -52,15 +52,15 @@ public class JDAEventListener extends ListenerAdapter {
                 seedCommandHandler.handle(interaction);
             }
         } catch (Exception e) {
-            logger.error("Erreur lors du traitement de la commande : {}", commandName, e);
-            event.reply("❌ Une erreur est survenue lors du traitement de la commande.").setEphemeral(true).queue();
+            logger.error("Error processing command: {}", commandName, e);
+            event.reply("❌ An error occurred while processing the command.").setEphemeral(true).queue();
         }
     }
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
         String buttonId = event.getComponentId();
-        logger.info("Bouton cliqué : {} par {}", buttonId, event.getUser().getName());
+        logger.info("Button clicked: {} by {}", buttonId, event.getUser().getName());
 
         try {
             var interaction = JDAInteractionAdapter.fromButtonEvent(event);
@@ -70,19 +70,19 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_rsl" -> rslButtonHandler.handle(interaction);
                 case "seed_pot" -> potButtonHandler.handle(interaction);
                 case "franco_validate" -> francoValidateHandler.handle(interaction);
-                case "franco_cancel" -> event.reply("Génération annulée.").setEphemeral(true).queue();
-                default -> event.reply("Bouton inconnu : " + buttonId).setEphemeral(true).queue();
+                case "franco_cancel" -> event.reply("Generation cancelled.").setEphemeral(true).queue();
+                default -> event.reply("Unknown button: " + buttonId).setEphemeral(true).queue();
             }
         } catch (Exception e) {
-            logger.error("Erreur lors du traitement du bouton : {}", buttonId, e);
-            event.reply("❌ Une erreur est survenue.").setEphemeral(true).queue();
+            logger.error("Error processing button: {}", buttonId, e);
+            event.reply("❌ An error occurred.").setEphemeral(true).queue();
         }
     }
 
     @Override
     public void onStringSelectInteraction(StringSelectInteractionEvent event) {
         String menuId = event.getComponentId();
-        logger.info("Menu sélectionné : {} par {}", menuId, event.getUser().getName());
+        logger.info("Menu selected: {} by {}", menuId, event.getUser().getName());
 
         try {
             var interaction = JDAInteractionAdapter.fromSelectMenuEvent(event);
@@ -90,11 +90,11 @@ public class JDAEventListener extends ListenerAdapter {
             if (menuId.startsWith("franco_options_")) {
                 francoSelectMenuHandler.handle(interaction);
             } else {
-                event.reply("Menu inconnu : " + menuId).setEphemeral(true).queue();
+                event.reply("Unknown menu: " + menuId).setEphemeral(true).queue();
             }
         } catch (Exception e) {
-            logger.error("Erreur lors du traitement du menu : {}", menuId, e);
-            event.reply("❌ Une erreur est survenue.").setEphemeral(true).queue();
+            logger.error("Error processing menu: {}", menuId, e);
+            event.reply("❌ An error occurred.").setEphemeral(true).queue();
         }
     }
 }

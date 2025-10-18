@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Représente un preset de configuration.
- * Contient les settings de base et les options configurables par l'utilisateur.
+ * Represents a configuration preset.
+ * Contains base settings and user-configurable options.
  */
 public record Preset(
         String name,
@@ -14,15 +14,15 @@ public record Preset(
 ) {
     public Preset {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Le nom du preset ne peut pas être vide");
+            throw new IllegalArgumentException("Preset name cannot be empty");
         }
         if (baseSettings == null) {
-            throw new IllegalArgumentException("Les settings de base ne peuvent pas être null");
+            throw new IllegalArgumentException("Base settings cannot be null");
         }
     }
 
     /**
-     * Option configurable dans un preset.
+     * Configurable option within a preset.
      */
     public record PresetOption(
             String id,
@@ -33,10 +33,10 @@ public record Preset(
     ) {
         public PresetOption {
             if (id == null || id.isBlank()) {
-                throw new IllegalArgumentException("L'ID de l'option ne peut pas être vide");
+                throw new IllegalArgumentException("Option ID cannot be empty");
             }
             if (label == null || label.isBlank()) {
-                throw new IllegalArgumentException("Le label ne peut pas être vide");
+                throw new IllegalArgumentException("Label cannot be empty");
             }
         }
     }

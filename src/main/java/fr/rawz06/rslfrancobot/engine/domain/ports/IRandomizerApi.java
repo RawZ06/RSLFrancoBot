@@ -4,17 +4,17 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
 
 /**
- * Port pour l'API du randomizer OoT.
- * Abstraction de la communication avec ootrandomizer.com.
- * Implémenté dans l'API Layer.
+ * Port for the OoT randomizer API.
+ * Abstraction of communication with ootrandomizer.com.
+ * Implemented in the API Layer.
  */
 public interface IRandomizerApi {
     /**
-     * Génère une seed sur le site ootrandomizer.com.
+     * Generates a seed on ootrandomizer.com.
      *
-     * @param settings Les settings complets pour la génération
-     * @return Le résultat contenant l'URL et le hash de la seed
-     * @throws RandomizerApiException Si la génération échoue
+     * @param settings Complete settings for generation
+     * @return Result containing the URL and hash of the seed
+     * @throws RandomizerApiException If generation fails
      */
     SeedResult generateSeed(SettingsFile settings) throws RandomizerApiException;
 

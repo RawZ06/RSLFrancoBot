@@ -3,8 +3,8 @@ package fr.rawz06.rslfrancobot.engine.domain.entities;
 import java.util.Map;
 
 /**
- * Représente une demande de génération de seed.
- * Entité du domaine métier.
+ * Represents a seed generation request.
+ * Business domain entity.
  */
 public record SeedRequest(
         SeedMode mode,
@@ -13,10 +13,10 @@ public record SeedRequest(
 ) {
     public SeedRequest {
         if (mode == null) {
-            throw new IllegalArgumentException("Le mode ne peut pas être null");
+            throw new IllegalArgumentException("Mode cannot be null");
         }
         if (userId == null || userId.isBlank()) {
-            throw new IllegalArgumentException("L'userId ne peut pas être vide");
+            throw new IllegalArgumentException("UserId cannot be empty");
         }
     }
 }

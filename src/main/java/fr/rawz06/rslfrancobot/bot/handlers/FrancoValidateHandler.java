@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Handler pour la validation des options Franco.
- * Récupère les sélections de l'utilisateur et génère la seed.
+ * Handler for Franco options validation.
+ * Retrieves user selections and generates the seed.
  */
 @Component
 public class FrancoValidateHandler {
@@ -27,11 +27,11 @@ public class FrancoValidateHandler {
     }
 
     public void handle(DiscordInteraction interaction) {
-        // Defer immédiatement pour éviter le timeout Discord
+        // Defer immediately to avoid Discord timeout
         interaction.defer();
 
         try {
-            // Récupérer les sélections stockées
+            // Retrieve stored selections
             @SuppressWarnings("unchecked")
             List<String> selectedOptions = (List<String>) interaction.getUserData("franco_selections", List.class);
 
@@ -39,32 +39,32 @@ public class FrancoValidateHandler {
                 selectedOptions = List.of();
             }
 
-            // Afficher les options sélectionnées pour rassurer l'utilisateur
+            // Display selected options to reassure user
             interaction.editDeferredReply(presenter.presentSelectedOptions(selectedOptions));
 
-            // Attendre un peu pour que l'utilisateur voie les options
+            // Wait a bit for user to see options
             Thread.sleep(2000);
 
-            // Convertir en Map pour SeedService (les IDs des options comme clés)
+            // Convert to Map for SeedService (option IDs as keys)
             Map<String, String> userSettings = new HashMap<>();
             for (String optionId : selectedOptions) {
                 userSettings.put(optionId, "true");
             }
 
-            // Générer la seed
+            // Generate seed
             SeedResult result = seedService.generateSeed(
                     SeedMode.FRANCO,
                     interaction.getUserId(),
                     userSettings
             );
 
-            // Éditer avec le résultat final
+            // Edit with final result
             interaction.editDeferredReply(presenter.presentSeedResult(result));
         } catch (SeedService.SeedGenerationException e) {
             interaction.editDeferredReply(presenter.presentError(e.getMessage()));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            interaction.editDeferredReply(presenter.presentError("Génération interrompue"));
+            interaction.editDeferredReply(presenter.presentError("Generation interrupted"));
         }
     }
 }

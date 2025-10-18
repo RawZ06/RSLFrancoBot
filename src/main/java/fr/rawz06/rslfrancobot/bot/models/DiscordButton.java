@@ -1,7 +1,7 @@
 package fr.rawz06.rslfrancobot.bot.models;
 
 /**
- * Représente un bouton Discord.
+ * Represents a Discord button.
  */
 public record DiscordButton(
         String label,
@@ -9,10 +9,10 @@ public record DiscordButton(
         Style style
 ) {
     public enum Style {
-        PRIMARY,    // Bleu
-        SECONDARY,  // Gris
-        SUCCESS,    // Vert
-        DANGER      // Rouge
+        PRIMARY,    // Blue
+        SECONDARY,  // Gray
+        SUCCESS,    // Green
+        DANGER      // Red
     }
 
     public DiscordButton(String label, String customId) {

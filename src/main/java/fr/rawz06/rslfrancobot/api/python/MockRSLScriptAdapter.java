@@ -9,28 +9,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Implémentation Mock du script Python RSL.
- * Simule l'exécution du script sans réellement l'appeler.
- * À remplacer par une vraie implémentation ProcessBuilder plus tard.
+ * Mock implementation of the RSL Python script.
+ * Simulates script execution without actually calling it.
+ * To be replaced with real ProcessBuilder implementation later.
  */
 @Component
 public class MockRSLScriptAdapter implements IRSLScriptRunner {
 
     @Override
     public SettingsFile generateSettings(Preset preset) throws ScriptExecutionException {
-        // Simuler un délai d'exécution du script
+        // Simulate script execution delay
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new ScriptExecutionException("Interruption pendant l'exécution du script", e);
+            throw new ScriptExecutionException("Script execution interrupted", e);
         }
 
-        // Pour le mock, on retourne simplement les settings de base du preset
-        // avec quelques modifications aléatoires simulées
+        // For the mock, simply return preset base settings
+        // with some simulated random modifications
         Map<String, Object> mockSettings = new HashMap<>(preset.baseSettings());
 
-        // Simuler quelques changements aléatoires
+        // Simulate some random changes
         mockSettings.put("seed", String.valueOf(System.currentTimeMillis()));
         mockSettings.put("generated_by", "MockRSLScript");
 

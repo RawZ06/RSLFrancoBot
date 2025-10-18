@@ -1,8 +1,8 @@
 package fr.rawz06.rslfrancobot.engine.domain.entities;
 
 /**
- * Résultat de la génération d'une seed.
- * Contient les informations retournées par le randomizer.
+ * Result of seed generation.
+ * Contains information returned by the randomizer.
  */
 public record SeedResult(
         String seedUrl,
@@ -11,7 +11,7 @@ public record SeedResult(
 ) {
     public SeedResult {
         if (seedUrl == null || seedUrl.isBlank()) {
-            throw new IllegalArgumentException("L'URL de la seed ne peut pas être vide");
+            throw new IllegalArgumentException("Seed URL cannot be empty");
         }
     }
 }

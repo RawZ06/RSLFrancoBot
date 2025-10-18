@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Service applicatif qui coordonne les use cases du domaine.
- * Point d'entrée du Bot Layer vers l'Engine Layer.
+ * Application service that coordinates domain use cases.
+ * Entry point from Bot Layer to Engine Layer.
  */
 @Service
 public class SeedService {
@@ -34,7 +34,7 @@ public class SeedService {
     }
 
     /**
-     * Génère une seed selon le mode demandé.
+     * Generates a seed according to the requested mode.
      */
     public SeedResult generateSeed(SeedMode mode, String userId, Map<String, String> userSettings) throws SeedGenerationException {
         SeedRequest request = new SeedRequest(mode, userId, userSettings);
@@ -45,17 +45,17 @@ public class SeedService {
                 case RSL, POT -> generateRSLSeedUseCase.execute(request);
             };
         } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException e) {
-            throw new SeedGenerationException("Erreur lors de la génération de la seed", e);
+            throw new SeedGenerationException("Error during seed generation", e);
         }
     }
 
     /**
-     * Récupère les options disponibles pour un preset donné.
+     * Retrieves available options for a given preset.
      */
     public List<Preset.PresetOption> getAvailableOptions(String presetName) {
         return presetRepository.getPreset(presetName)
                 .map(Preset::availableOptions)
-                .orElseThrow(() -> new IllegalArgumentException("Preset introuvable : " + presetName));
+                .orElseThrow(() -> new IllegalArgumentException("Preset not found: " + presetName));
     }
 
     public static class SeedGenerationException extends Exception {

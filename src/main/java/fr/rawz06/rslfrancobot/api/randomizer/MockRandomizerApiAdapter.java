@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 /**
- * Implémentation Mock de l'API Randomizer.
- * Simule la génération de seed sans appeler le vrai site.
- * À remplacer par une vraie implémentation HTTP plus tard.
+ * Mock implementation of the Randomizer API.
+ * Simulates seed generation without calling the real site.
+ * To be replaced with real HTTP implementation later.
  */
 @Component
 public class MockRandomizerApiAdapter implements IRandomizerApi {
@@ -27,31 +27,31 @@ public class MockRandomizerApiAdapter implements IRandomizerApi {
 
     @Override
     public SeedResult generateSeed(SettingsFile settings) throws RandomizerApiException {
-        // Afficher les settings en JSON formaté pour vérification
+        // Display settings in formatted JSON for verification
         try {
             String jsonSettings = objectMapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(settings.settings());
 
             System.out.println("\n" + "=".repeat(80));
-            System.out.println("📋 SETTINGS ENVOYÉS À L'API RANDOMIZER (MOCK)");
+            System.out.println("📋 SETTINGS SENT TO RANDOMIZER API (MOCK)");
             System.out.println("=".repeat(80));
             System.out.println(jsonSettings);
             System.out.println("=".repeat(80) + "\n");
 
-            logger.info("Settings contient {} clés", settings.settings().size());
+            logger.info("Settings contains {} keys", settings.settings().size());
         } catch (Exception e) {
-            logger.error("Erreur lors de la sérialisation des settings", e);
+            logger.error("Error serializing settings", e);
         }
 
-        // Simuler un délai réseau réaliste (5 secondes comme un vrai appel HTTP)
+        // Simulate realistic network delay (5 seconds like a real HTTP call)
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RandomizerApiException("Interruption pendant la génération", e);
+            throw new RandomizerApiException("Generation interrupted", e);
         }
 
-        // Générer un résultat fictif
+        // Generate mock result
         String mockHash = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         String mockUrl = "https://ootrandomizer.com/seed/get?id=" + mockHash;
 

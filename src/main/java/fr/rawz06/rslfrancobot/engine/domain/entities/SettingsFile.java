@@ -3,15 +3,15 @@ package fr.rawz06.rslfrancobot.engine.domain.entities;
 import java.util.Map;
 
 /**
- * Représente un fichier de settings complet pour le randomizer.
- * Contient toute la configuration nécessaire pour générer une seed.
+ * Represents a complete settings file for the randomizer.
+ * Contains all the configuration needed to generate a seed.
  */
 public record SettingsFile(
         Map<String, Object> settings
 ) {
     public SettingsFile {
         if (settings == null) {
-            throw new IllegalArgumentException("Les settings ne peuvent pas être null");
+            throw new IllegalArgumentException("Settings cannot be null");
         }
     }
 

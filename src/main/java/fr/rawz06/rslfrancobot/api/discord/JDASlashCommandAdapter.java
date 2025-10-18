@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Adaptateur pour les SlashCommandInteractionEvent de JDA.
+ * Adapter for JDA SlashCommandInteractionEvent.
  */
 public class JDASlashCommandAdapter implements DiscordInteraction {
 
@@ -84,7 +84,7 @@ public class JDASlashCommandAdapter implements DiscordInteraction {
 
     @Override
     public void defer() {
-        // Bloquer jusqu'à ce que le defer soit complété (synchrone)
+        // Block until defer is completed (synchronous)
         this.deferredHook = event.deferReply().complete();
     }
 
@@ -93,7 +93,7 @@ public class JDASlashCommandAdapter implements DiscordInteraction {
         if (deferredHook != null) {
             var editAction = deferredHook.editOriginal(message.getContent());
 
-            // Convertir les composants
+            // Convert components
             List<ActionRow> actionRows = new ArrayList<>();
 
             if (!message.getButtons().isEmpty()) {

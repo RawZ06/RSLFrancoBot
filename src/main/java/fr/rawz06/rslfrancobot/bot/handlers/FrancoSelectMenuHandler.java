@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Handler pour les sélections dans les menus Franco.
- * Stocke les sélections de l'utilisateur.
+ * Handler for selections in Franco menus.
+ * Stores user selections.
  */
 @Component
 public class FrancoSelectMenuHandler {
@@ -16,26 +16,26 @@ public class FrancoSelectMenuHandler {
     public void handle(DiscordInteraction interaction) {
         List<String> selectedValues = interaction.getSelectedValues();
 
-        // Récupérer les sélections précédentes
+        // Retrieve previous selections
         @SuppressWarnings("unchecked")
         List<String> existingSelections = (List<String>) interaction.getUserData("franco_selections", List.class);
         if (existingSelections == null) {
             existingSelections = new ArrayList<>();
         }
 
-        // Ajouter les nouvelles sélections (en évitant les doublons)
+        // Add new selections (avoiding duplicates)
         for (String value : selectedValues) {
             if (!existingSelections.contains(value)) {
                 existingSelections.add(value);
             }
         }
 
-        // Stocker les sélections mises à jour
+        // Store updated selections
         interaction.storeUserData("franco_selections", existingSelections);
 
-        // Accuser réception (message éphémère)
+        // Acknowledge selection (ephemeral message)
         interaction.reply(new fr.rawz06.rslfrancobot.bot.models.DiscordMessage(
-                "✅ Sélection enregistrée ! Clique sur 'Valider et générer' quand tu es prêt."
+                "✅ Selection saved! Click 'Validate & Generate' when ready."
         ) {{
             setEphemeral(true);
         }});

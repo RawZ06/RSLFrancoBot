@@ -1,7 +1,7 @@
 package fr.rawz06.rslfrancobot.engine.domain.entities;
 
 /**
- * Enum représentant les différents modes de génération de seed.
+ * Enum representing the different seed generation modes.
  */
 public enum SeedMode {
     FRANCO,

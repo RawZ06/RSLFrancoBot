@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Use Case : Génère une seed en mode Franco.
- * Orchestre la validation, la construction des settings et la génération de la seed.
+ * Use Case: Generates a seed in Franco mode.
+ * Orchestrates validation, settings construction, and seed generation.
  */
 @Component
 public class GenerateFrancoSeedUseCase {
@@ -32,29 +32,29 @@ public class GenerateFrancoSeedUseCase {
     }
 
     public SeedResult execute(SeedRequest request) throws GenerationException {
-        // 1. Récupérer le preset Franco
+        // 1. Retrieve Franco preset
         Preset francoPreset = presetRepository.getPreset("franco")
-                .orElseThrow(() -> new GenerationException("Preset Franco introuvable"));
+                .orElseThrow(() -> new GenerationException("Franco preset not found"));
 
-        // 2. Extraire les IDs des options sélectionnées
+        // 2. Extract selected option IDs
         List<String> selectedOptionIds = request.userSettings() != null
                 ? List.copyOf(request.userSettings().keySet())
                 : List.of();
 
-        // 3. Valider les settings
+        // 3. Validate settings
         ValidationResult validationResult = validateSettingsUseCase.execute(francoPreset, selectedOptionIds);
         if (!validationResult.isValid()) {
-            throw new GenerationException("Settings invalides : " + validationResult.getErrorMessage());
+            throw new GenerationException("Invalid settings: " + validationResult.getErrorMessage());
         }
 
-        // 4. Construire les settings finaux
+        // 4. Build final settings
         SettingsFile finalSettings = buildFinalSettingsUseCase.execute(francoPreset, selectedOptionIds);
 
-        // 5. Générer la seed via l'API
+        // 5. Generate seed via API
         try {
             return randomizerApi.generateSeed(finalSettings);
         } catch (IRandomizerApi.RandomizerApiException e) {
-            throw new GenerationException("Erreur lors de la génération de la seed", e);
+            throw new GenerationException("Error during seed generation", e);
         }
     }
 

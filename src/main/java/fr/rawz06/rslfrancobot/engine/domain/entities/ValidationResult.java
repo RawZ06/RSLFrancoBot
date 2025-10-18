@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Résultat de la validation des settings utilisateur.
- * Indique si la configuration est valide et contient les éventuelles erreurs.
+ * Result of user settings validation.
+ * Indicates whether the configuration is valid and contains any errors.
  */
 public class ValidationResult {
     private final boolean valid;
@@ -23,7 +23,7 @@ public class ValidationResult {
 
     public static ValidationResult failure(List<String> errors) {
         if (errors == null || errors.isEmpty()) {
-            throw new IllegalArgumentException("Les erreurs ne peuvent pas être vides pour un résultat échec");
+            throw new IllegalArgumentException("Errors cannot be empty for a failure result");
         }
         return new ValidationResult(false, new ArrayList<>(errors));
     }

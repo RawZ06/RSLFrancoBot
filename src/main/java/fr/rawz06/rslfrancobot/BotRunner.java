@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * Composant responsable de l'initialisation et du démarrage du bot Discord.
- * Configure JDA et enregistre les commandes slash.
+ * Component responsible for initializing and starting the Discord bot.
+ * Configures JDA and registers slash commands.
  */
 @Component
 public class BotRunner {
@@ -32,7 +32,7 @@ public class BotRunner {
     @PostConstruct
     public void init() {
         try {
-            logger.info("Démarrage du bot Discord...");
+            logger.info("Starting Discord bot...");
 
             JDA jda = JDABuilder.createDefault(token)
                     .enableIntents(GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT)
@@ -41,16 +41,16 @@ public class BotRunner {
 
             jda.awaitReady();
 
-            // Enregistrer les commandes slash
+            // Register slash commands
             jda.updateCommands().addCommands(
-                    Commands.slash("seed", "Générer une seed OoT Randomizer")
+                    Commands.slash("seed", "Generate an OoT Randomizer seed")
             ).queue();
 
-            logger.info("Bot Discord démarré avec succès !");
+            logger.info("Discord bot started successfully!");
 
         } catch (Exception e) {
-            logger.error("Erreur lors du démarrage du bot", e);
-            throw new RuntimeException("Impossible de démarrer le bot Discord", e);
+            logger.error("Error starting bot", e);
+            throw new RuntimeException("Unable to start Discord bot", e);
         }
     }
 }

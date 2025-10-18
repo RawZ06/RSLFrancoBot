@@ -17,10 +17,10 @@ import java.util.List;
 public class SeedPresenter {
 
     /**
-     * Crée le message initial de choix du mode de seed.
+     * Creates the initial seed mode selection message.
      */
     public DiscordMessage presentModeSelection() {
-        DiscordMessage message = new DiscordMessage("Quel type de seed veux-tu générer ?");
+        DiscordMessage message = new DiscordMessage("What type of seed do you want to generate?");
         message.addButton("Franco", "seed_franco", DiscordButton.Style.PRIMARY);
         message.addButton("RSL", "seed_rsl", DiscordButton.Style.SUCCESS);
         message.addButton("PoT", "seed_pot", DiscordButton.Style.DANGER);
@@ -28,37 +28,37 @@ public class SeedPresenter {
     }
 
     /**
-     * Présente le résultat d'une seed générée.
+     * Presents the result of a generated seed.
      */
     public DiscordMessage presentSeedResult(SeedResult result) {
         StringBuilder content = new StringBuilder();
-        content.append("✅ Seed générée avec succès !\n\n");
-        content.append("🔗 Lien : ").append(result.seedUrl()).append("\n");
+        content.append("✅ Seed generated successfully!\n\n");
+        content.append("🔗 Link: ").append(result.seedUrl()).append("\n");
 
         if (result.seedHash() != null && !result.seedHash().isEmpty()) {
-            content.append("🔑 Hash : ").append(result.seedHash());
+            content.append("🔑 Hash: ").append(result.seedHash());
         }
 
         return new DiscordMessage(content.toString());
     }
 
     /**
-     * Présente un message d'erreur.
+     * Presents an error message.
      */
     public DiscordMessage presentError(String errorMessage) {
-        return new DiscordMessage("❌ Erreur : " + errorMessage);
+        return new DiscordMessage("❌ Error: " + errorMessage);
     }
 
     /**
-     * Présente le menu de sélection des options Franco.
+     * Presents the Franco options selection menu.
      */
     public DiscordMessage presentFrancoOptions(List<Preset.PresetOption> options) {
         DiscordMessage message = new DiscordMessage(
-                "Choisis les options Franco que tu veux activer :\n" +
-                "(Tu peux en sélectionner plusieurs)"
+                "Choose the Franco options you want to enable:\n" +
+                "(You can select multiple options)"
         );
 
-        // Découper les options en plusieurs menus si nécessaire (max 25 par menu)
+        // Split options into multiple menus if needed (max 25 per menu)
         int menuIndex = 0;
         for (int i = 0; i < options.size(); i += 25) {
             List<Preset.PresetOption> chunk = options.subList(i, Math.min(i + 25, options.size()));
@@ -66,16 +66,16 @@ public class SeedPresenter {
             message.addSelectMenu(menu);
         }
 
-        // Ajouter un bouton de validation
-        message.addButton("Valider et générer", "franco_validate", DiscordButton.Style.SUCCESS);
-        message.addButton("Annuler", "franco_cancel", DiscordButton.Style.SECONDARY);
+        // Add validation buttons
+        message.addButton("Validate & Generate", "franco_validate", DiscordButton.Style.SUCCESS);
+        message.addButton("Cancel", "franco_cancel", DiscordButton.Style.SECONDARY);
 
         return message;
     }
 
     private DiscordSelectMenu createOptionsMenu(List<Preset.PresetOption> options, int menuIndex) {
         DiscordSelectMenu menu = new DiscordSelectMenu("franco_options_" + menuIndex);
-        menu.setPlaceholder("Sélectionne tes options...");
+        menu.setPlaceholder("Select your options...");
         menu.setMinValues(0);
         menu.setMaxValues(options.size());
 
@@ -87,30 +87,30 @@ public class SeedPresenter {
     }
 
     /**
-     * Message de confirmation pour RSL/PoT.
+     * Confirmation message for RSL/PoT generation.
      */
     public DiscordMessage presentRSLConfirmation(String mode) {
         return new DiscordMessage(
-                String.format("🎲 Génération d'une seed %s aléatoire en cours...", mode)
+                String.format("🎲 Generating a random %s seed...", mode)
         );
     }
 
     /**
-     * Présente les options sélectionnées par l'utilisateur avant la génération.
+     * Presents the selected options before seed generation.
      */
     public DiscordMessage presentSelectedOptions(List<String> selectedOptionIds) {
         StringBuilder content = new StringBuilder();
-        content.append("🔧 Options Franco sélectionnées :\n\n");
+        content.append("🔧 Selected Franco options:\n\n");
 
         if (selectedOptionIds == null || selectedOptionIds.isEmpty()) {
-            content.append("_Aucune option spécifique (preset de base uniquement)_\n");
+            content.append("_No specific options (base preset only)_\n");
         } else {
             for (String optionId : selectedOptionIds) {
                 content.append("✅ ").append(optionId).append("\n");
             }
         }
 
-        content.append("\n⏳ Génération de la seed en cours...");
+        content.append("\n⏳ Generating seed...");
 
         return new DiscordMessage(content.toString());
     }

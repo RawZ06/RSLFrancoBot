@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Représente un menu de sélection Discord (StringSelectMenu).
+ * Represents a Discord selection menu (StringSelectMenu).
  */
 public class DiscordSelectMenu {
     private String customId;
