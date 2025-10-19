@@ -52,11 +52,19 @@ public class GenerateRSLSeedUseCase {
         }
 
         // 2.5. Add hardcoded settings for RSL modes
-        Map<String, Object> modifiedSettings = new HashMap<>(generatedSettings.settings());
-        modifiedSettings.put("show_seed_info", true);
-        modifiedSettings.put("create_spoiler", true);
-        modifiedSettings.put("password_lock", false);
-        SettingsFile finalSettings = new SettingsFile(modifiedSettings);
+        // Python script puts everything inside a "settings" key, we need to flatten it
+        Map<String, Object> pythonOutput = generatedSettings.settings();
+
+        // Extract nested settings and put everything at top level
+        @SuppressWarnings("unchecked")
+        Map<String, Object> flatSettings = new HashMap<>((Map<String, Object>) pythonOutput.get("settings"));
+
+        // Add hardcoded settings at top level
+        flatSettings.put("show_seed_info", true);
+        flatSettings.put("create_spoiler", true);
+        flatSettings.put("password_lock", false);
+
+        SettingsFile finalSettings = new SettingsFile(flatSettings);
 
         // 3. Generate seed via API
         try {

@@ -7,7 +7,6 @@ import fr.rawz06.rslfrancobot.engine.domain.ports.IRSLScriptRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -23,7 +22,6 @@ import java.util.stream.Collectors;
  * Executes RandomSettingsGenerator.py script to generate random settings.
  */
 @Component
-@Primary // Replaces the Mock
 public class PythonRSLScriptAdapter implements IRSLScriptRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(PythonRSLScriptAdapter.class);
