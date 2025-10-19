@@ -42,7 +42,7 @@ public class SeedService {
         try {
             return switch (mode) {
                 case FRANCO -> generateFrancoSeedUseCase.execute(request);
-                case RSL, POT -> generateRSLSeedUseCase.execute(request);
+                case RSL, POT, BEGINNER -> generateRSLSeedUseCase.execute(request);
             };
         } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException e) {
             throw new SeedGenerationException("Error during seed generation", e);

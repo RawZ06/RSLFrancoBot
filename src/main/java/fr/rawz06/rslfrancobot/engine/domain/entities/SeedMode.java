@@ -6,5 +6,6 @@ package fr.rawz06.rslfrancobot.engine.domain.entities;
 public enum SeedMode {
     FRANCO,
     RSL,
-    POT
+    POT,
+    BEGINNER
 }

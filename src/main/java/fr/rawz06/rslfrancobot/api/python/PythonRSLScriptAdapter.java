@@ -44,6 +44,9 @@ public class PythonRSLScriptAdapter implements IRSLScriptRunner {
     @Value("${app.python.weights.pot}")
     private String potWeight;
 
+    @Value("${app.python.weights.beginner}")
+    private String beginnerWeight;
+
     private final ObjectMapper objectMapper;
 
     public PythonRSLScriptAdapter(ObjectMapper objectMapper) {
@@ -52,7 +55,12 @@ public class PythonRSLScriptAdapter implements IRSLScriptRunner {
 
     @Override
     public SettingsFile generateSettings(Preset preset) throws ScriptExecutionException {
-        String weightFile = preset.name().equals("rsl") ? rslWeight : potWeight;
+        String weightFile = switch (preset.name()) {
+            case "rsl" -> rslWeight;
+            case "pot" -> potWeight;
+            case "beginner" -> beginnerWeight;
+            default -> throw new ScriptExecutionException("Unknown preset: " + preset.name());
+        };
 
         logger.info("Generating {} settings with Python script...", preset.name());
         logger.info("Weight file: {}", weightFile);

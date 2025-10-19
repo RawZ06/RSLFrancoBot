@@ -24,6 +24,7 @@ public class SeedPresenter {
         message.addButton("Franco", "seed_franco", DiscordButton.Style.PRIMARY);
         message.addButton("RSL", "seed_rsl", DiscordButton.Style.SUCCESS);
         message.addButton("PoT", "seed_pot", DiscordButton.Style.DANGER);
+        message.addButton("Beginner", "seed_beginner", DiscordButton.Style.SECONDARY);
         return message;
     }
 

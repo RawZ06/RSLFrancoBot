@@ -22,6 +22,7 @@ public class JDAEventListener extends ListenerAdapter {
     private final FrancoButtonHandler francoButtonHandler;
     private final RSLButtonHandler rslButtonHandler;
     private final PoTButtonHandler potButtonHandler;
+    private final BeginnerButtonHandler beginnerButtonHandler;
     private final FrancoValidateHandler francoValidateHandler;
     private final FrancoSelectMenuHandler francoSelectMenuHandler;
     private final FrancoRandomHandler francoRandomHandler;
@@ -31,6 +32,7 @@ public class JDAEventListener extends ListenerAdapter {
             FrancoButtonHandler francoButtonHandler,
             RSLButtonHandler rslButtonHandler,
             PoTButtonHandler potButtonHandler,
+            BeginnerButtonHandler beginnerButtonHandler,
             FrancoValidateHandler francoValidateHandler,
             FrancoSelectMenuHandler francoSelectMenuHandler,
             FrancoRandomHandler francoRandomHandler
@@ -39,6 +41,7 @@ public class JDAEventListener extends ListenerAdapter {
         this.francoButtonHandler = francoButtonHandler;
         this.rslButtonHandler = rslButtonHandler;
         this.potButtonHandler = potButtonHandler;
+        this.beginnerButtonHandler = beginnerButtonHandler;
         this.francoValidateHandler = francoValidateHandler;
         this.francoSelectMenuHandler = francoSelectMenuHandler;
         this.francoRandomHandler = francoRandomHandler;
@@ -84,6 +87,7 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_franco" -> francoButtonHandler.handle(interaction);
                 case "seed_rsl" -> rslButtonHandler.handle(interaction);
                 case "seed_pot" -> potButtonHandler.handle(interaction);
+                case "seed_beginner" -> beginnerButtonHandler.handle(interaction);
                 case "franco_validate" -> francoValidateHandler.handle(interaction);
                 case "franco_random" -> francoRandomHandler.showNumberSelection(interaction);
                 case "franco_cancel" -> event.reply("Generation cancelled.").setEphemeral(true).queue();

@@ -7,7 +7,7 @@ import fr.rawz06.rslfrancobot.engine.domain.ports.IRSLScriptRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * Use Case: Generates a seed in RSL (or PoT) mode.
+ * Use Case: Generates a seed in RSL, PoT, or Beginner mode.
  * Uses the Python script to generate random settings, then generates the seed.
  */
 @Component
@@ -32,7 +32,8 @@ public class GenerateRSLSeedUseCase {
         String presetName = switch (request.mode()) {
             case RSL -> "rsl";
             case POT -> "pot";
-            default -> throw new GenerationException("Unsupported mode for RSL/PoT: " + request.mode());
+            case BEGINNER -> "beginner";
+            default -> throw new GenerationException("Unsupported mode for RSL/PoT/Beginner: " + request.mode());
         };
 
         // 1. Retrieve preset
