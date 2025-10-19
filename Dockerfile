@@ -25,6 +25,8 @@ RUN apk add --no-cache \
     build-base \
     curl
 
+RUN pip3 install requests --break-system-packages
+
 # Clone plando-random-settings at specific commit
 RUN git clone https://github.com/matthewkirby/plando-random-settings.git ./plando-random-settings
 

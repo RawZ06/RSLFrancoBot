@@ -51,7 +51,7 @@ public class HttpRandomizerApiAdapter implements IRandomizerApi {
             HttpEntity<Map<String, Object>> request = new HttpEntity<>(settings.settings(), headers);
 
             // 5. Send POST request (HTTP-specific logic only)
-            logger.info("Calling API: POST {}", url);
+            logger.info("Calling API: POST https://ootrandomizer.com/api/v2/seed/create");
             ResponseEntity<ApiResponse> response = restTemplate.exchange(
                     url,
                     HttpMethod.POST,
