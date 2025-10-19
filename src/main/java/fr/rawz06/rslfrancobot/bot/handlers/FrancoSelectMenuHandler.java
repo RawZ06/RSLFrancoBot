@@ -33,11 +33,7 @@ public class FrancoSelectMenuHandler {
         // Store updated selections
         interaction.storeUserData("franco_selections", existingSelections);
 
-        // Acknowledge selection (ephemeral message)
-        interaction.reply(new fr.rawz06.rslfrancobot.bot.models.DiscordMessage(
-                "✅ Selection saved! Click 'Validate & Generate' when ready."
-        ) {{
-            setEphemeral(true);
-        }});
+        // Silently acknowledge the interaction (no visible message)
+        interaction.acknowledgeSelect();
     }
 }

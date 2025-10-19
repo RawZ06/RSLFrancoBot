@@ -50,6 +50,12 @@ public interface DiscordInteraction {
     void defer();
 
     /**
+     * Acknowledges the interaction silently without displaying any message.
+     * Used for component interactions (buttons/menus) that don't need feedback.
+     */
+    void acknowledgeSelect();
+
+    /**
      * Edits the deferred response after a defer().
      */
     void editDeferredReply(DiscordMessage message);
@@ -73,4 +79,16 @@ public interface DiscordInteraction {
      * Gets all stored user data.
      */
     Map<String, Object> getAllUserData();
+
+    /**
+     * Deletes the original message that triggered this interaction.
+     * Useful for cleaning up intermediate messages after final result.
+     */
+    void deleteOriginalMessage();
+
+    /**
+     * Sends a new message in the channel (not as interaction reply).
+     * Used to send final results that persist after cleaning up interaction messages.
+     */
+    void sendChannelMessage(DiscordMessage message);
 }

@@ -149,6 +149,32 @@ public class JDASlashCommandAdapter implements DiscordInteraction {
         return userDataStore.getOrDefault(userId, Map.of());
     }
 
+    @Override
+    public void deleteOriginalMessage() {
+        try {
+            if (deferredHook != null) {
+                deferredHook.deleteOriginal().queue();
+            }
+        } catch (Exception e) {
+            // Silently ignore if message is already deleted or cannot be deleted
+        }
+    }
+
+    @Override
+    public void sendChannelMessage(DiscordMessage message) {
+        try {
+            event.getChannel().sendMessage(message.getContent()).queue();
+        } catch (Exception e) {
+            // Silently ignore if cannot send message
+        }
+    }
+
+    @Override
+    public void acknowledgeSelect() {
+        // Slash commands don't need silent acknowledgment
+        // This method is for component interactions only
+    }
+
     private void addComponentsToReply(Object reply, DiscordMessage message) {
         List<ActionRow> actionRows = new ArrayList<>();
 

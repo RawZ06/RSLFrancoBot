@@ -27,6 +27,9 @@ public class FrancoButtonHandler {
         try {
             List<Preset.PresetOption> options = seedService.getAvailableOptions("franco");
             interaction.reply(presenter.presentFrancoOptions(options));
+
+            // Delete the mode selection message to keep channel clean
+            interaction.deleteOriginalMessage();
         } catch (Exception e) {
             interaction.reply(presenter.presentError("Unable to load Franco options: " + e.getMessage()));
         }

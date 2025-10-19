@@ -36,8 +36,11 @@ public class PoTButtonHandler {
                     Map.of()
             );
 
-            // Edit deferred reply with result
-            interaction.editDeferredReply(presenter.presentSeedResult(result, "PoT"));
+            // Send final result as channel message (persists after cleanup)
+            interaction.sendChannelMessage(presenter.presentSeedResult(result, "PoT"));
+
+            // Delete interaction messages to keep channel clean
+            interaction.deleteOriginalMessage();
         } catch (SeedService.SeedGenerationException e) {
             interaction.editDeferredReply(presenter.presentError(e.getMessage()));
         }

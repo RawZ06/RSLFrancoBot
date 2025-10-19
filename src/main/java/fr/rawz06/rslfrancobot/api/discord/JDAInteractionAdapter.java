@@ -166,6 +166,51 @@ public class JDAInteractionAdapter implements DiscordInteraction {
         return userDataStore.getOrDefault(userId, Map.of());
     }
 
+    @Override
+    public void deleteOriginalMessage() {
+        try {
+            // Delete the deferred reply message if it exists
+            if (deferredHook != null) {
+                deferredHook.deleteOriginal().queue();
+            }
+
+            // Also delete the button/menu message that triggered the interaction
+            if (event instanceof ButtonInteractionEvent buttonEvent) {
+                buttonEvent.getMessage().delete().queue();
+            } else if (event instanceof StringSelectInteractionEvent selectEvent) {
+                selectEvent.getMessage().delete().queue();
+            }
+        } catch (Exception e) {
+            // Silently ignore if message is already deleted or cannot be deleted
+        }
+    }
+
+    @Override
+    public void sendChannelMessage(DiscordMessage message) {
+        try {
+            if (event instanceof ButtonInteractionEvent buttonEvent) {
+                buttonEvent.getChannel().sendMessage(message.getContent()).queue();
+            } else if (event instanceof StringSelectInteractionEvent selectEvent) {
+                selectEvent.getChannel().sendMessage(message.getContent()).queue();
+            }
+        } catch (Exception e) {
+            // Silently ignore if cannot send message
+        }
+    }
+
+    @Override
+    public void acknowledgeSelect() {
+        try {
+            if (event instanceof StringSelectInteractionEvent selectEvent) {
+                selectEvent.deferEdit().queue(); // Silent acknowledgment for menus
+            } else if (event instanceof ButtonInteractionEvent buttonEvent) {
+                buttonEvent.deferEdit().queue(); // Silent acknowledgment for buttons
+            }
+        } catch (Exception e) {
+            // Silently ignore if already acknowledged
+        }
+    }
+
     private void sendMessageToJDA(ButtonInteractionEvent event, DiscordMessage message) {
         var reply = event.reply(message.getContent())
                 .setEphemeral(message.isEphemeral());

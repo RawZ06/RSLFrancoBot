@@ -39,12 +39,6 @@ public class FrancoValidateHandler {
                 selectedOptions = List.of();
             }
 
-            // Display selected options to reassure user
-            interaction.editDeferredReply(presenter.presentSelectedOptions(selectedOptions));
-
-            // Wait a bit for user to see options
-            Thread.sleep(2000);
-
             // Convert to Map for SeedService (option IDs as keys)
             Map<String, String> userSettings = new HashMap<>();
             for (String optionId : selectedOptions) {
@@ -58,13 +52,13 @@ public class FrancoValidateHandler {
                     userSettings
             );
 
-            // Edit with final result including selected options
-            interaction.editDeferredReply(presenter.presentFrancoSeedResult(result, selectedOptions));
+            // Send final result as channel message (persists after cleanup)
+            interaction.sendChannelMessage(presenter.presentFrancoSeedResult(result, selectedOptions));
+
+            // Delete interaction messages to keep channel clean
+            interaction.deleteOriginalMessage();
         } catch (SeedService.SeedGenerationException e) {
             interaction.editDeferredReply(presenter.presentError(e.getMessage()));
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            interaction.editDeferredReply(presenter.presentError("Generation interrupted"));
         }
     }
 }

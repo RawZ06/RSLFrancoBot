@@ -49,6 +49,9 @@ public class FrancoRandomHandler {
 
         message.setEphemeral(true);
         interaction.reply(message);
+
+        // Delete the Franco options selection message
+        interaction.deleteOriginalMessage();
     }
 
     /**
@@ -70,12 +73,6 @@ public class FrancoRandomHandler {
             // Randomly select compatible options
             List<String> selectedOptions = selectRandomCompatibleOptions(allOptions, requestedCount);
 
-            // Show selected options
-            interaction.editDeferredReply(presenter.presentSelectedOptions(selectedOptions));
-
-            // Wait a bit for user to see options
-            Thread.sleep(2000);
-
             // Convert to Map for SeedService
             Map<String, String> userSettings = new HashMap<>();
             for (String optionId : selectedOptions) {
@@ -89,13 +86,13 @@ public class FrancoRandomHandler {
                     userSettings
             );
 
-            // Edit with final result including selected options
-            interaction.editDeferredReply(presenter.presentFrancoSeedResult(result, selectedOptions));
+            // Send final result as channel message (persists after cleanup)
+            interaction.sendChannelMessage(presenter.presentFrancoSeedResult(result, selectedOptions));
+
+            // Delete interaction messages to keep channel clean
+            interaction.deleteOriginalMessage();
         } catch (SeedService.SeedGenerationException e) {
             interaction.editDeferredReply(presenter.presentError(e.getMessage()));
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            interaction.editDeferredReply(presenter.presentError("Generation interrupted"));
         }
     }
 
