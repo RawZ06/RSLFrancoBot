@@ -20,6 +20,7 @@ import java.util.Map;
  * All business logic is delegated to RandomizerApiService.
  */
 @Component
+@Primary
 public class HttpRandomizerApiAdapter implements IRandomizerApi {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpRandomizerApiAdapter.class);

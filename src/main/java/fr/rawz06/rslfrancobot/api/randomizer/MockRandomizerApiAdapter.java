@@ -19,7 +19,6 @@ import java.util.UUID;
  * Uses the same business logic as HttpRandomizerApiAdapter via RandomizerApiService.
  */
 @Component
-@Primary
 public class MockRandomizerApiAdapter implements IRandomizerApi {
 
     private static final Logger logger = LoggerFactory.getLogger(MockRandomizerApiAdapter.class);
