@@ -6,6 +6,9 @@ import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
 import fr.rawz06.rslfrancobot.engine.domain.ports.IRSLScriptRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Use Case: Generates a seed in RSL, PoT, or Beginner mode.
  * Uses the Python script to generate random settings, then generates the seed.
@@ -48,9 +51,16 @@ public class GenerateRSLSeedUseCase {
             throw new GenerationException("Error executing RSL script", e);
         }
 
+        // 2.5. Add hardcoded settings for RSL modes
+        Map<String, Object> modifiedSettings = new HashMap<>(generatedSettings.settings());
+        modifiedSettings.put("show_seed_info", true);
+        modifiedSettings.put("create_spoiler", true);
+        modifiedSettings.put("password_lock", false);
+        SettingsFile finalSettings = new SettingsFile(modifiedSettings);
+
         // 3. Generate seed via API
         try {
-            return randomizerApi.generateSeed(generatedSettings);
+            return randomizerApi.generateSeed(request.mode(), finalSettings);
         } catch (IRandomizerApi.RandomizerApiException e) {
             throw new GenerationException("Error during seed generation", e);
         }

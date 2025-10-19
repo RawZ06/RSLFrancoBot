@@ -21,23 +21,39 @@ public class SeedPresenter {
      */
     public DiscordMessage presentModeSelection() {
         DiscordMessage message = new DiscordMessage("What type of seed do you want to generate?");
-        message.addButton("Franco", "seed_franco", DiscordButton.Style.PRIMARY);
-        message.addButton("RSL", "seed_rsl", DiscordButton.Style.SUCCESS);
-        message.addButton("PoT", "seed_pot", DiscordButton.Style.DANGER);
-        message.addButton("Beginner", "seed_beginner", DiscordButton.Style.SECONDARY);
+
+        // First row: Classic modes
+        List<DiscordButton> classicRow = List.of(
+            new DiscordButton("Franco (classic)", "seed_franco", DiscordButton.Style.PRIMARY),
+            new DiscordButton("S8 (classic)", "seed_s8", DiscordButton.Style.PRIMARY)
+        );
+        message.addButtonRow(classicRow);
+
+        // Second row: RSL modes
+        List<DiscordButton> rslRow = List.of(
+            new DiscordButton("S7 (RSL)", "seed_rsl", DiscordButton.Style.SUCCESS),
+            new DiscordButton("PoT (RSL)", "seed_pot", DiscordButton.Style.DANGER),
+            new DiscordButton("Beginner (RSL)", "seed_beginner", DiscordButton.Style.SECONDARY)
+        );
+        message.addButtonRow(rslRow);
+
         return message;
     }
 
     /**
      * Presents the result of a generated seed (RSL/PoT mode).
      */
-    public DiscordMessage presentSeedResult(SeedResult result, String seedType) {
+    public DiscordMessage presentSeedResult(SeedResult result, String seedType, String username) {
         StringBuilder content = new StringBuilder();
-        content.append("✅ Seed ").append(seedType).append(" generated successfully!\n\n");
+        content.append("✅ Seed ").append(seedType).append(" generated successfully by ").append(username).append("!\n\n");
         content.append("🔗 Link: ").append(result.seedUrl()).append("\n");
 
-        if (result.seedHash() != null && !result.seedHash().isEmpty()) {
-            content.append("🔑 Hash: ").append(result.seedHash());
+        if (result.version() != null) {
+            content.append("📦 Version: ").append(result.version()).append("\n");
+        }
+
+        if (result.spoilers() != null) {
+            content.append("👁️ Spoilers: ").append(result.spoilers() ? "Yes" : "No");
         }
 
         return new DiscordMessage(content.toString());
@@ -46,13 +62,17 @@ public class SeedPresenter {
     /**
      * Presents the result of a generated Franco seed with selected options.
      */
-    public DiscordMessage presentFrancoSeedResult(SeedResult result, List<String> selectedOptions) {
+    public DiscordMessage presentFrancoSeedResult(SeedResult result, List<String> selectedOptions, String username) {
         StringBuilder content = new StringBuilder();
-        content.append("✅ Seed Franco generated successfully!\n\n");
+        content.append("✅ Seed Franco generated successfully by ").append(username).append("!\n\n");
         content.append("🔗 Link: ").append(result.seedUrl()).append("\n");
 
-        if (result.seedHash() != null && !result.seedHash().isEmpty()) {
-            content.append("🔑 Hash: ").append(result.seedHash()).append("\n");
+        if (result.version() != null) {
+            content.append("📦 Version: ").append(result.version()).append("\n");
+        }
+
+        if (result.spoilers() != null) {
+            content.append("👁️ Spoilers: ").append(result.spoilers() ? "Yes" : "No").append("\n");
         }
 
         // Add selected settings

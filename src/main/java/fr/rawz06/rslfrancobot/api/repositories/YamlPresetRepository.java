@@ -34,6 +34,7 @@ public class YamlPresetRepository implements IPresetRepository {
             loadRSLPreset();
             loadPoTPreset();
             loadBeginnerPreset();
+            loadS8Preset();
             logger.info("Presets loaded successfully: {}", presets.keySet());
         } catch (Exception e) {
             logger.error("Error loading presets", e);
@@ -81,6 +82,17 @@ public class YamlPresetRepository implements IPresetRepository {
             presets.put("beginner", beginnerPreset);
         } catch (Exception e) {
             logger.error("Error loading Beginner preset", e);
+        }
+    }
+
+    private void loadS8Preset() {
+        // For S8: fixed settings from standard.json, no user options
+        try {
+            Map<String, Object> baseSettings = loadJsonFile("data/standard.json");
+            Preset s8Preset = new Preset("s8", baseSettings, List.of());
+            presets.put("s8", s8Preset);
+        } catch (Exception e) {
+            logger.error("Error loading S8 preset", e);
         }
     }
 

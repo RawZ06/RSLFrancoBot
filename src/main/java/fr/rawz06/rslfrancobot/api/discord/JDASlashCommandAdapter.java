@@ -96,7 +96,17 @@ public class JDASlashCommandAdapter implements DiscordInteraction {
             // Convert components
             List<ActionRow> actionRows = new ArrayList<>();
 
-            if (!message.getButtons().isEmpty()) {
+            // Handle button rows (new style with multiple rows)
+            if (!message.getButtonRows().isEmpty()) {
+                for (List<DiscordButton> row : message.getButtonRows()) {
+                    List<Button> buttons = row.stream()
+                            .map(this::convertButton)
+                            .toList();
+                    actionRows.add(ActionRow.of(buttons));
+                }
+            }
+            // Fallback to old single-row buttons
+            else if (!message.getButtons().isEmpty()) {
                 List<Button> buttons = message.getButtons().stream()
                         .map(this::convertButton)
                         .toList();
@@ -178,7 +188,17 @@ public class JDASlashCommandAdapter implements DiscordInteraction {
     private void addComponentsToReply(Object reply, DiscordMessage message) {
         List<ActionRow> actionRows = new ArrayList<>();
 
-        if (!message.getButtons().isEmpty()) {
+        // Handle button rows (new style with multiple rows)
+        if (!message.getButtonRows().isEmpty()) {
+            for (List<DiscordButton> row : message.getButtonRows()) {
+                List<Button> buttons = row.stream()
+                        .map(this::convertButton)
+                        .toList();
+                actionRows.add(ActionRow.of(buttons));
+            }
+        }
+        // Fallback to old single-row buttons
+        else if (!message.getButtons().isEmpty()) {
             List<Button> buttons = message.getButtons().stream()
                     .map(this::convertButton)
                     .toList();

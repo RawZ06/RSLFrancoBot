@@ -6,7 +6,8 @@ package fr.rawz06.rslfrancobot.engine.domain.entities;
  */
 public record SeedResult(
         String seedUrl,
-        String seedHash,
+        String version,
+        Boolean spoilers,
         SettingsFile usedSettings
 ) {
     public SeedResult {

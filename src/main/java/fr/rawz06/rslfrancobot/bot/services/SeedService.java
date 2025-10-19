@@ -7,6 +7,7 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.ports.IPresetRepository;
 import fr.rawz06.rslfrancobot.engine.usecases.franco.GenerateFrancoSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.rsl.GenerateRSLSeedUseCase;
+import fr.rawz06.rslfrancobot.engine.usecases.s8.GenerateS8SeedUseCase;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +22,18 @@ public class SeedService {
 
     private final GenerateFrancoSeedUseCase generateFrancoSeedUseCase;
     private final GenerateRSLSeedUseCase generateRSLSeedUseCase;
+    private final GenerateS8SeedUseCase generateS8SeedUseCase;
     private final IPresetRepository presetRepository;
 
     public SeedService(
             GenerateFrancoSeedUseCase generateFrancoSeedUseCase,
             GenerateRSLSeedUseCase generateRSLSeedUseCase,
+            GenerateS8SeedUseCase generateS8SeedUseCase,
             IPresetRepository presetRepository
     ) {
         this.generateFrancoSeedUseCase = generateFrancoSeedUseCase;
         this.generateRSLSeedUseCase = generateRSLSeedUseCase;
+        this.generateS8SeedUseCase = generateS8SeedUseCase;
         this.presetRepository = presetRepository;
     }
 
@@ -43,8 +47,9 @@ public class SeedService {
             return switch (mode) {
                 case FRANCO -> generateFrancoSeedUseCase.execute(request);
                 case RSL, POT, BEGINNER -> generateRSLSeedUseCase.execute(request);
+                case S8 -> generateS8SeedUseCase.execute(request);
             };
-        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException e) {
+        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException | GenerateS8SeedUseCase.GenerationException e) {
             throw new SeedGenerationException("Error during seed generation", e);
         }
     }

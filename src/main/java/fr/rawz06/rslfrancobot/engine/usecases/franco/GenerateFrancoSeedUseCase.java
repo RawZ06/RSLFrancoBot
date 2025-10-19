@@ -52,7 +52,7 @@ public class GenerateFrancoSeedUseCase {
 
         // 5. Generate seed via API
         try {
-            return randomizerApi.generateSeed(finalSettings);
+            return randomizerApi.generateSeed(request.mode(), finalSettings);
         } catch (IRandomizerApi.RandomizerApiException e) {
             throw new GenerationException("Error during seed generation", e);
         }

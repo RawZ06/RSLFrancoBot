@@ -1,6 +1,7 @@
 package fr.rawz06.rslfrancobot.api.randomizer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.rawz06.rslfrancobot.engine.domain.entities.SeedMode;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
 import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
@@ -26,7 +27,7 @@ public class MockRandomizerApiAdapter implements IRandomizerApi {
     }
 
     @Override
-    public SeedResult generateSeed(SettingsFile settings) throws RandomizerApiException {
+    public SeedResult generateSeed(SeedMode mode, SettingsFile settings) throws RandomizerApiException {
         // Display settings in formatted JSON for verification
         try {
             String jsonSettings = objectMapper.writerWithDefaultPrettyPrinter()
@@ -52,9 +53,11 @@ public class MockRandomizerApiAdapter implements IRandomizerApi {
         }
 
         // Generate mock result
-        String mockHash = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-        String mockUrl = "https://ootrandomizer.com/seed/get?id=" + mockHash;
+        String mockId = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        String mockUrl = "https://ootrandomizer.com/seed/get?id=" + mockId;
+        String mockVersion = "8.3.0";
+        Boolean mockSpoilers = true;
 
-        return new SeedResult(mockUrl, mockHash, settings);
+        return new SeedResult(mockUrl, mockVersion, mockSpoilers, settings);
     }
 }

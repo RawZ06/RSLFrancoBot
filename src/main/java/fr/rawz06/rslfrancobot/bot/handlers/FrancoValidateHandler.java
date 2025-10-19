@@ -53,7 +53,7 @@ public class FrancoValidateHandler {
             );
 
             // Send final result as channel message (persists after cleanup)
-            interaction.sendChannelMessage(presenter.presentFrancoSeedResult(result, selectedOptions));
+            interaction.sendChannelMessage(presenter.presentFrancoSeedResult(result, selectedOptions, interaction.getUsername()));
 
             // Delete interaction messages to keep channel clean
             interaction.deleteOriginalMessage();

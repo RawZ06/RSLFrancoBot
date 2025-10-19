@@ -7,5 +7,6 @@ public enum SeedMode {
     FRANCO,
     RSL,
     POT,
-    BEGINNER
+    BEGINNER,
+    S8
 }

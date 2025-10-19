@@ -37,7 +37,7 @@ public class RSLButtonHandler {
             );
 
             // Send final result as channel message (persists after cleanup)
-            interaction.sendChannelMessage(presenter.presentSeedResult(result, "RSL"));
+            interaction.sendChannelMessage(presenter.presentSeedResult(result, "RSL", interaction.getUsername()));
 
             // Delete interaction messages to keep channel clean
             interaction.deleteOriginalMessage();

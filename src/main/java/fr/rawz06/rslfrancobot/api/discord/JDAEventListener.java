@@ -23,6 +23,7 @@ public class JDAEventListener extends ListenerAdapter {
     private final RSLButtonHandler rslButtonHandler;
     private final PoTButtonHandler potButtonHandler;
     private final BeginnerButtonHandler beginnerButtonHandler;
+    private final S8ButtonHandler s8ButtonHandler;
     private final FrancoValidateHandler francoValidateHandler;
     private final FrancoSelectMenuHandler francoSelectMenuHandler;
     private final FrancoRandomHandler francoRandomHandler;
@@ -33,6 +34,7 @@ public class JDAEventListener extends ListenerAdapter {
             RSLButtonHandler rslButtonHandler,
             PoTButtonHandler potButtonHandler,
             BeginnerButtonHandler beginnerButtonHandler,
+            S8ButtonHandler s8ButtonHandler,
             FrancoValidateHandler francoValidateHandler,
             FrancoSelectMenuHandler francoSelectMenuHandler,
             FrancoRandomHandler francoRandomHandler
@@ -42,6 +44,7 @@ public class JDAEventListener extends ListenerAdapter {
         this.rslButtonHandler = rslButtonHandler;
         this.potButtonHandler = potButtonHandler;
         this.beginnerButtonHandler = beginnerButtonHandler;
+        this.s8ButtonHandler = s8ButtonHandler;
         this.francoValidateHandler = francoValidateHandler;
         this.francoSelectMenuHandler = francoSelectMenuHandler;
         this.francoRandomHandler = francoRandomHandler;
@@ -88,6 +91,7 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_rsl" -> rslButtonHandler.handle(interaction);
                 case "seed_pot" -> potButtonHandler.handle(interaction);
                 case "seed_beginner" -> beginnerButtonHandler.handle(interaction);
+                case "seed_s8" -> s8ButtonHandler.handle(interaction);
                 case "franco_validate" -> francoValidateHandler.handle(interaction);
                 case "franco_random" -> francoRandomHandler.showNumberSelection(interaction);
                 case "franco_cancel" -> event.reply("Generation cancelled.").setEphemeral(true).queue();

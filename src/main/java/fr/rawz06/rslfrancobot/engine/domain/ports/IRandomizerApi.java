@@ -1,5 +1,6 @@
 package fr.rawz06.rslfrancobot.engine.domain.ports;
 
+import fr.rawz06.rslfrancobot.engine.domain.entities.SeedMode;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
 
@@ -12,11 +13,12 @@ public interface IRandomizerApi {
     /**
      * Generates a seed on ootrandomizer.com.
      *
+     * @param mode Seed mode (to determine API version)
      * @param settings Complete settings for generation
      * @return Result containing the URL and hash of the seed
      * @throws RandomizerApiException If generation fails
      */
-    SeedResult generateSeed(SettingsFile settings) throws RandomizerApiException;
+    SeedResult generateSeed(SeedMode mode, SettingsFile settings) throws RandomizerApiException;
 
     class RandomizerApiException extends Exception {
         public RandomizerApiException(String message) {

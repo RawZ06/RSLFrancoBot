@@ -10,6 +10,7 @@ import java.util.List;
 public class DiscordMessage {
     private String content;
     private final List<DiscordButton> buttons = new ArrayList<>();
+    private final List<List<DiscordButton>> buttonRows = new ArrayList<>();
     private final List<DiscordSelectMenu> selectMenus = new ArrayList<>();
     private boolean ephemeral = false;
 
@@ -43,6 +44,14 @@ public class DiscordMessage {
 
     public void addButton(String label, String customId, DiscordButton.Style style) {
         this.buttons.add(new DiscordButton(label, customId, style));
+    }
+
+    public List<List<DiscordButton>> getButtonRows() {
+        return buttonRows;
+    }
+
+    public void addButtonRow(List<DiscordButton> row) {
+        this.buttonRows.add(row);
     }
 
     public List<DiscordSelectMenu> getSelectMenus() {
