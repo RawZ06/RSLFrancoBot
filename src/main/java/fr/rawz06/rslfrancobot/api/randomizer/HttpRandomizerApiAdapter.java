@@ -7,7 +7,7 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
 import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -18,9 +18,11 @@ import java.util.Map;
  * Real HTTP implementation of the Randomizer API.
  * Calls https://ootrandomizer.com/api/v2/seed/create
  * All business logic is delegated to RandomizerApiService.
+ *
+ * Active only in the 'prod' profile.
  */
 @Component
-@Primary
+@Profile("prod")
 public class HttpRandomizerApiAdapter implements IRandomizerApi {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpRandomizerApiAdapter.class);

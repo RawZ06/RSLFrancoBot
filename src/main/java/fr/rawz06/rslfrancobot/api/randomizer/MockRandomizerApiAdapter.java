@@ -8,7 +8,7 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
 import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -17,8 +17,11 @@ import java.util.UUID;
  * Mock implementation of the Randomizer API.
  * Simulates seed generation without calling the real API.
  * Uses the same business logic as HttpRandomizerApiAdapter via RandomizerApiService.
+ *
+ * Active only in 'dev' and 'local' profiles.
  */
 @Component
+@Profile({"dev", "local", "default"})
 public class MockRandomizerApiAdapter implements IRandomizerApi {
 
     private static final Logger logger = LoggerFactory.getLogger(MockRandomizerApiAdapter.class);
