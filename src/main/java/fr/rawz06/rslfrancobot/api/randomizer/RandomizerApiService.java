@@ -29,12 +29,6 @@ public class RandomizerApiService {
     @Value("${app.randomizer.api.version.rsl}")
     private String versionRsl;
 
-    @Value("${app.randomizer.api.version.pot}")
-    private String versionPot;
-
-    @Value("${app.randomizer.api.version.beginner}")
-    private String versionBeginner;
-
     @Value("${app.randomizer.api.version.standard}")
     private String versionStandard;
 
@@ -56,9 +50,7 @@ public class RandomizerApiService {
     public String getVersionForMode(SeedMode mode) {
         return switch (mode) {
             case FRANCO -> versionFranco;
-            case RSL -> versionRsl;
-            case POT -> versionPot;
-            case BEGINNER -> versionBeginner;
+            case RSL, POT, BEGINNER -> versionRsl;
             case S8 -> versionStandard;
             case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> versionAllsanity;
         };
