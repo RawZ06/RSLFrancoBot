@@ -35,6 +35,7 @@ public class YamlPresetRepository implements IPresetRepository {
             loadPoTPreset();
             loadBeginnerPreset();
             loadS8Preset();
+            loadAllsanityPreset();
             logger.info("Presets loaded successfully: {}", presets.keySet());
         } catch (Exception e) {
             logger.error("Error loading presets", e);
@@ -93,6 +94,17 @@ public class YamlPresetRepository implements IPresetRepository {
             presets.put("s8", s8Preset);
         } catch (Exception e) {
             logger.error("Error loading S8 preset", e);
+        }
+    }
+
+    private void loadAllsanityPreset() {
+        // For Allsanity: fixed settings from allsanity.json, no user options
+        try {
+            Map<String, Object> baseSettings = loadJsonFile("data/allsanity.json");
+            Preset allsanityPreset = new Preset("allsanity", baseSettings, List.of());
+            presets.put("allsanity", allsanityPreset);
+        } catch (Exception e) {
+            logger.error("Error loading Allsanity preset", e);
         }
     }
 

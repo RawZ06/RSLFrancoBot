@@ -5,6 +5,7 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.SeedMode;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedRequest;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.ports.IPresetRepository;
+import fr.rawz06.rslfrancobot.engine.usecases.allsanity.GenerateAllsanitySeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.franco.GenerateFrancoSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.rsl.GenerateRSLSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.s8.GenerateS8SeedUseCase;
@@ -23,17 +24,20 @@ public class SeedService {
     private final GenerateFrancoSeedUseCase generateFrancoSeedUseCase;
     private final GenerateRSLSeedUseCase generateRSLSeedUseCase;
     private final GenerateS8SeedUseCase generateS8SeedUseCase;
+    private final GenerateAllsanitySeedUseCase generateAllsanitySeedUseCase;
     private final IPresetRepository presetRepository;
 
     public SeedService(
             GenerateFrancoSeedUseCase generateFrancoSeedUseCase,
             GenerateRSLSeedUseCase generateRSLSeedUseCase,
             GenerateS8SeedUseCase generateS8SeedUseCase,
+            GenerateAllsanitySeedUseCase generateAllsanitySeedUseCase,
             IPresetRepository presetRepository
     ) {
         this.generateFrancoSeedUseCase = generateFrancoSeedUseCase;
         this.generateRSLSeedUseCase = generateRSLSeedUseCase;
         this.generateS8SeedUseCase = generateS8SeedUseCase;
+        this.generateAllsanitySeedUseCase = generateAllsanitySeedUseCase;
         this.presetRepository = presetRepository;
     }
 
@@ -48,8 +52,9 @@ public class SeedService {
                 case FRANCO -> generateFrancoSeedUseCase.execute(request);
                 case RSL, POT, BEGINNER -> generateRSLSeedUseCase.execute(request);
                 case S8 -> generateS8SeedUseCase.execute(request);
+                case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> generateAllsanitySeedUseCase.execute(request);
             };
-        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException | GenerateS8SeedUseCase.GenerationException e) {
+        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException | GenerateS8SeedUseCase.GenerationException | GenerateAllsanitySeedUseCase.GenerationException e) {
             throw new SeedGenerationException("Error during seed generation", e);
         }
     }

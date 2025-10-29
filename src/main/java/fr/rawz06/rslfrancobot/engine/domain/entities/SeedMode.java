@@ -8,5 +8,8 @@ public enum SeedMode {
     RSL,
     POT,
     BEGINNER,
-    S8
+    S8,
+    ALLSANITY_ER_DECOUPLED,
+    ALLSANITY_ER,
+    ALLSANITY_ONLY
 }

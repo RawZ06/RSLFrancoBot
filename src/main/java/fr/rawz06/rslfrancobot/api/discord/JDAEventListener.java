@@ -24,6 +24,9 @@ public class JDAEventListener extends ListenerAdapter {
     private final PoTButtonHandler potButtonHandler;
     private final BeginnerButtonHandler beginnerButtonHandler;
     private final S8ButtonHandler s8ButtonHandler;
+    private final AllsanityErDecoupledButtonHandler allsanityErDecoupledButtonHandler;
+    private final AllsanityErButtonHandler allsanityErButtonHandler;
+    private final AllsanityOnlyButtonHandler allsanityOnlyButtonHandler;
     private final FrancoValidateHandler francoValidateHandler;
     private final FrancoSelectMenuHandler francoSelectMenuHandler;
     private final FrancoRandomHandler francoRandomHandler;
@@ -35,6 +38,9 @@ public class JDAEventListener extends ListenerAdapter {
             PoTButtonHandler potButtonHandler,
             BeginnerButtonHandler beginnerButtonHandler,
             S8ButtonHandler s8ButtonHandler,
+            AllsanityErDecoupledButtonHandler allsanityErDecoupledButtonHandler,
+            AllsanityErButtonHandler allsanityErButtonHandler,
+            AllsanityOnlyButtonHandler allsanityOnlyButtonHandler,
             FrancoValidateHandler francoValidateHandler,
             FrancoSelectMenuHandler francoSelectMenuHandler,
             FrancoRandomHandler francoRandomHandler
@@ -45,6 +51,9 @@ public class JDAEventListener extends ListenerAdapter {
         this.potButtonHandler = potButtonHandler;
         this.beginnerButtonHandler = beginnerButtonHandler;
         this.s8ButtonHandler = s8ButtonHandler;
+        this.allsanityErDecoupledButtonHandler = allsanityErDecoupledButtonHandler;
+        this.allsanityErButtonHandler = allsanityErButtonHandler;
+        this.allsanityOnlyButtonHandler = allsanityOnlyButtonHandler;
         this.francoValidateHandler = francoValidateHandler;
         this.francoSelectMenuHandler = francoSelectMenuHandler;
         this.francoRandomHandler = francoRandomHandler;
@@ -92,6 +101,9 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_pot" -> potButtonHandler.handle(interaction);
                 case "seed_beginner" -> beginnerButtonHandler.handle(interaction);
                 case "seed_s8" -> s8ButtonHandler.handle(interaction);
+                case "seed_allsanity_er_decoupled" -> allsanityErDecoupledButtonHandler.handle(interaction);
+                case "seed_allsanity_er" -> allsanityErButtonHandler.handle(interaction);
+                case "seed_allsanity_only" -> allsanityOnlyButtonHandler.handle(interaction);
                 case "franco_validate" -> francoValidateHandler.handle(interaction);
                 case "franco_random" -> francoRandomHandler.showNumberSelection(interaction);
                 case "franco_cancel" -> event.reply("Generation cancelled.").setEphemeral(true).queue();
