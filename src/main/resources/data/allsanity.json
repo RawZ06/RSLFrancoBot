@@ -214,5 +214,10 @@
   "junk_ice_traps": "on",
   "custom_ice_trap_percent": 50,
   "custom_ice_trap_count": 100,
-  "ice_trap_appearance": "major_only"
+  "ice_trap_appearance": "major_only",
+  "nnn_1": false,
+  "nnn_2": false,
+  "nnn_3": false,
+  "nnn_4": false,
+  "nnn_5": "I am lame!"
 }
