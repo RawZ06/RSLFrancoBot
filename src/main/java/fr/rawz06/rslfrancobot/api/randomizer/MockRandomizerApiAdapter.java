@@ -20,8 +20,6 @@ import java.util.UUID;
  *
  * Active only in 'dev' and 'local' profiles.
  */
-@Component
-@Profile({"dev", "local", "default"})
 public class MockRandomizerApiAdapter implements IRandomizerApi {
 
     private static final Logger logger = LoggerFactory.getLogger(MockRandomizerApiAdapter.class);

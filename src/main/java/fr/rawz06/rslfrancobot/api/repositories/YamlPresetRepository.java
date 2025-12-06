@@ -35,6 +35,7 @@ public class YamlPresetRepository implements IPresetRepository {
             loadPoTPreset();
             loadBeginnerPreset();
             loadS8Preset();
+            loadS9Preset();
             loadAllsanityPreset();
             logger.info("Presets loaded successfully: {}", presets.keySet());
         } catch (Exception e) {
@@ -87,13 +88,24 @@ public class YamlPresetRepository implements IPresetRepository {
     }
 
     private void loadS8Preset() {
-        // For S8: fixed settings from standard.json, no user options
+        // For S8: fixed settings from s8.json, no user options
         try {
-            Map<String, Object> baseSettings = loadJsonFile("data/standard.json");
+            Map<String, Object> baseSettings = loadJsonFile("data/s8.json");
             Preset s8Preset = new Preset("s8", baseSettings, List.of());
             presets.put("s8", s8Preset);
         } catch (Exception e) {
             logger.error("Error loading S8 preset", e);
+        }
+    }
+
+    private void loadS9Preset() {
+        // For S9: fixed settings from s9.json, no user options
+        try {
+            Map<String, Object> baseSettings = loadJsonFile("data/s9.json");
+            Preset s9Preset = new Preset("s9", baseSettings, List.of());
+            presets.put("s9", s9Preset);
+        } catch (Exception e) {
+            logger.error("Error loading S9 preset", e);
         }
     }
 

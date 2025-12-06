@@ -22,7 +22,6 @@ import java.util.Map;
  * Active only in the 'prod' profile.
  */
 @Component
-@Profile("prod")
 public class HttpRandomizerApiAdapter implements IRandomizerApi {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpRandomizerApiAdapter.class);

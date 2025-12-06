@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * Handler for the S8 button.
- * Directly generates an S8 seed with fixed settings from s8.json (no user options).
+ * Handler for the S9 button.
+ * Directly generates an S9 seed with fixed settings from s9.json (no user options).
  */
 @Component
-public class S8ButtonHandler {
+public class S9ButtonHandler {
 
     private final SeedService seedService;
     private final SeedPresenter presenter;
 
-    public S8ButtonHandler(SeedService seedService, SeedPresenter presenter) {
+    public S9ButtonHandler(SeedService seedService, SeedPresenter presenter) {
         this.seedService = seedService;
         this.presenter = presenter;
     }
@@ -29,15 +29,15 @@ public class S8ButtonHandler {
             // Defer immediately as generation takes time
             interaction.defer();
 
-            // Generate seed with fixed settings from s8.json
+            // Generate seed with fixed settings from s9.json
             SeedResult result = seedService.generateSeed(
-                    SeedMode.S8,
+                    SeedMode.S9,
                     interaction.getUserId(),
                     Map.of()
             );
 
             // Send final result as channel message (persists after cleanup)
-            interaction.sendChannelMessage(presenter.presentSeedResult(result, "S8", interaction.getUsername()));
+            interaction.sendChannelMessage(presenter.presentSeedResult(result, "S9", interaction.getUsername()));
 
             // Delete interaction messages to keep channel clean
             interaction.deleteOriginalMessage();

@@ -25,7 +25,8 @@ public class SeedPresenter {
         // First row: Classic modes
         List<DiscordButton> classicRow = List.of(
             new DiscordButton("Franco (classic)", "seed_franco", DiscordButton.Style.PRIMARY),
-            new DiscordButton("S8 (classic)", "seed_s8", DiscordButton.Style.PRIMARY)
+            new DiscordButton("S8", "seed_s8", DiscordButton.Style.PRIMARY),
+            new DiscordButton("S9", "seed_s9", DiscordButton.Style.PRIMARY)
         );
         message.addButtonRow(classicRow);
 

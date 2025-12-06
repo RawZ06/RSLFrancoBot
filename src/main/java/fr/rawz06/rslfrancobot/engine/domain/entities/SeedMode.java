@@ -9,6 +9,7 @@ public enum SeedMode {
     POT,
     BEGINNER,
     S8,
+    S9,
     ALLSANITY_ER_DECOUPLED,
     ALLSANITY_ER,
     ALLSANITY_ONLY

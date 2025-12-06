@@ -24,6 +24,7 @@ public class JDAEventListener extends ListenerAdapter {
     private final PoTButtonHandler potButtonHandler;
     private final BeginnerButtonHandler beginnerButtonHandler;
     private final S8ButtonHandler s8ButtonHandler;
+    private final S9ButtonHandler s9ButtonHandler;
     private final AllsanityErDecoupledButtonHandler allsanityErDecoupledButtonHandler;
     private final AllsanityErButtonHandler allsanityErButtonHandler;
     private final AllsanityOnlyButtonHandler allsanityOnlyButtonHandler;
@@ -38,6 +39,7 @@ public class JDAEventListener extends ListenerAdapter {
             PoTButtonHandler potButtonHandler,
             BeginnerButtonHandler beginnerButtonHandler,
             S8ButtonHandler s8ButtonHandler,
+            S9ButtonHandler s9ButtonHandler,
             AllsanityErDecoupledButtonHandler allsanityErDecoupledButtonHandler,
             AllsanityErButtonHandler allsanityErButtonHandler,
             AllsanityOnlyButtonHandler allsanityOnlyButtonHandler,
@@ -51,6 +53,7 @@ public class JDAEventListener extends ListenerAdapter {
         this.potButtonHandler = potButtonHandler;
         this.beginnerButtonHandler = beginnerButtonHandler;
         this.s8ButtonHandler = s8ButtonHandler;
+        this.s9ButtonHandler = s9ButtonHandler;
         this.allsanityErDecoupledButtonHandler = allsanityErDecoupledButtonHandler;
         this.allsanityErButtonHandler = allsanityErButtonHandler;
         this.allsanityOnlyButtonHandler = allsanityOnlyButtonHandler;
@@ -101,6 +104,7 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_pot" -> potButtonHandler.handle(interaction);
                 case "seed_beginner" -> beginnerButtonHandler.handle(interaction);
                 case "seed_s8" -> s8ButtonHandler.handle(interaction);
+                case "seed_s9" -> s9ButtonHandler.handle(interaction);
                 case "seed_allsanity_er_decoupled" -> allsanityErDecoupledButtonHandler.handle(interaction);
                 case "seed_allsanity_er" -> allsanityErButtonHandler.handle(interaction);
                 case "seed_allsanity_only" -> allsanityOnlyButtonHandler.handle(interaction);

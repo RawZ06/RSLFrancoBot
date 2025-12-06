@@ -7,6 +7,7 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -29,8 +30,11 @@ public class RandomizerApiService {
     @Value("${app.randomizer.api.version.rsl}")
     private String versionRsl;
 
-    @Value("${app.randomizer.api.version.standard}")
-    private String versionStandard;
+    @Value("${app.randomizer.api.version.s8}")
+    private String versionS8;
+
+    @Value("${app.randomizer.api.version.s9}")
+    private String versionS9;
 
     @Value("${app.randomizer.api.version.franco}")
     private String versionFranco;
@@ -51,7 +55,8 @@ public class RandomizerApiService {
         return switch (mode) {
             case FRANCO -> versionFranco;
             case RSL, POT, BEGINNER -> versionRsl;
-            case S8 -> versionStandard;
+            case S8 -> versionS8;
+            case S9 -> versionS9;
             case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> versionAllsanity;
         };
     }

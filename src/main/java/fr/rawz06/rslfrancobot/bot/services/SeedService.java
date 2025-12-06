@@ -9,6 +9,7 @@ import fr.rawz06.rslfrancobot.engine.usecases.allsanity.GenerateAllsanitySeedUse
 import fr.rawz06.rslfrancobot.engine.usecases.franco.GenerateFrancoSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.rsl.GenerateRSLSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.s8.GenerateS8SeedUseCase;
+import fr.rawz06.rslfrancobot.engine.usecases.s9.GenerateS9SeedUseCase;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class SeedService {
     private final GenerateFrancoSeedUseCase generateFrancoSeedUseCase;
     private final GenerateRSLSeedUseCase generateRSLSeedUseCase;
     private final GenerateS8SeedUseCase generateS8SeedUseCase;
+    private final GenerateS9SeedUseCase generateS9SeedUseCase;
     private final GenerateAllsanitySeedUseCase generateAllsanitySeedUseCase;
     private final IPresetRepository presetRepository;
 
@@ -31,12 +33,14 @@ public class SeedService {
             GenerateFrancoSeedUseCase generateFrancoSeedUseCase,
             GenerateRSLSeedUseCase generateRSLSeedUseCase,
             GenerateS8SeedUseCase generateS8SeedUseCase,
+            GenerateS9SeedUseCase generateS9SeedUseCase,
             GenerateAllsanitySeedUseCase generateAllsanitySeedUseCase,
             IPresetRepository presetRepository
     ) {
         this.generateFrancoSeedUseCase = generateFrancoSeedUseCase;
         this.generateRSLSeedUseCase = generateRSLSeedUseCase;
         this.generateS8SeedUseCase = generateS8SeedUseCase;
+        this.generateS9SeedUseCase = generateS9SeedUseCase;
         this.generateAllsanitySeedUseCase = generateAllsanitySeedUseCase;
         this.presetRepository = presetRepository;
     }
@@ -52,9 +56,10 @@ public class SeedService {
                 case FRANCO -> generateFrancoSeedUseCase.execute(request);
                 case RSL, POT, BEGINNER -> generateRSLSeedUseCase.execute(request);
                 case S8 -> generateS8SeedUseCase.execute(request);
+                case S9 -> generateS9SeedUseCase.execute(request);
                 case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> generateAllsanitySeedUseCase.execute(request);
             };
-        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException | GenerateS8SeedUseCase.GenerationException | GenerateAllsanitySeedUseCase.GenerationException e) {
+        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException | GenerateS8SeedUseCase.GenerationException | GenerateS9SeedUseCase.GenerationException | GenerateAllsanitySeedUseCase.GenerationException e) {
             throw new SeedGenerationException("Error during seed generation", e);
         }
     }
