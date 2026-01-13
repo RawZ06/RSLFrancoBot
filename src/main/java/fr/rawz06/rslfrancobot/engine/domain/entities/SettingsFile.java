@@ -14,12 +14,4 @@ public record SettingsFile(
             throw new IllegalArgumentException("Settings cannot be null");
         }
     }
-
-    public Object getSetting(String key) {
-        return settings.get(key);
-    }
-
-    public boolean hasSetting(String key) {
-        return settings.containsKey(key);
-    }
 }

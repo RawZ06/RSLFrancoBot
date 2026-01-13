@@ -37,6 +37,7 @@ public class YamlPresetRepository implements IPresetRepository {
             loadS8Preset();
             loadS9Preset();
             loadAllsanityPreset();
+            loadSaladPreset();
             logger.info("Presets loaded successfully: {}", presets.keySet());
         } catch (Exception e) {
             logger.error("Error loading presets", e);
@@ -106,6 +107,17 @@ public class YamlPresetRepository implements IPresetRepository {
             presets.put("s9", s9Preset);
         } catch (Exception e) {
             logger.error("Error loading S9 preset", e);
+        }
+    }
+
+    private void loadSaladPreset() {
+        // For Salad: fixed settings from salad.json, no user options
+        try {
+            Map<String, Object> baseSettings = loadJsonFile("data/salad.json");
+            Preset s9Preset = new Preset("salad", baseSettings, List.of());
+            presets.put("salad", s9Preset);
+        } catch (Exception e) {
+            logger.error("Error loading Salad preset", e);
         }
     }
 

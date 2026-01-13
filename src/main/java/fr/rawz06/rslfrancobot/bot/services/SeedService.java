@@ -10,6 +10,8 @@ import fr.rawz06.rslfrancobot.engine.usecases.franco.GenerateFrancoSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.rsl.GenerateRSLSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.s8.GenerateS8SeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.s9.GenerateS9SeedUseCase;
+import fr.rawz06.rslfrancobot.engine.usecases.salad.GenerateSaladSeedUseCase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.Map;
  * Entry point from Bot Layer to Engine Layer.
  */
 @Service
+@RequiredArgsConstructor
 public class SeedService {
 
     private final GenerateFrancoSeedUseCase generateFrancoSeedUseCase;
@@ -27,23 +30,8 @@ public class SeedService {
     private final GenerateS8SeedUseCase generateS8SeedUseCase;
     private final GenerateS9SeedUseCase generateS9SeedUseCase;
     private final GenerateAllsanitySeedUseCase generateAllsanitySeedUseCase;
+    private final GenerateSaladSeedUseCase generateSaladSeedUseCase;
     private final IPresetRepository presetRepository;
-
-    public SeedService(
-            GenerateFrancoSeedUseCase generateFrancoSeedUseCase,
-            GenerateRSLSeedUseCase generateRSLSeedUseCase,
-            GenerateS8SeedUseCase generateS8SeedUseCase,
-            GenerateS9SeedUseCase generateS9SeedUseCase,
-            GenerateAllsanitySeedUseCase generateAllsanitySeedUseCase,
-            IPresetRepository presetRepository
-    ) {
-        this.generateFrancoSeedUseCase = generateFrancoSeedUseCase;
-        this.generateRSLSeedUseCase = generateRSLSeedUseCase;
-        this.generateS8SeedUseCase = generateS8SeedUseCase;
-        this.generateS9SeedUseCase = generateS9SeedUseCase;
-        this.generateAllsanitySeedUseCase = generateAllsanitySeedUseCase;
-        this.presetRepository = presetRepository;
-    }
 
     /**
      * Generates a seed according to the requested mode.
@@ -58,8 +46,9 @@ public class SeedService {
                 case S8 -> generateS8SeedUseCase.execute(request);
                 case S9 -> generateS9SeedUseCase.execute(request);
                 case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> generateAllsanitySeedUseCase.execute(request);
+                case SALAD_BOSS,  SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> generateSaladSeedUseCase.execute(request);
             };
-        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException | GenerateS8SeedUseCase.GenerationException | GenerateS9SeedUseCase.GenerationException | GenerateAllsanitySeedUseCase.GenerationException e) {
+        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException | GenerateS8SeedUseCase.GenerationException | GenerateS9SeedUseCase.GenerationException | GenerateAllsanitySeedUseCase.GenerationException | GenerateSaladSeedUseCase.GenerationException e) {
             throw new SeedGenerationException("Error during seed generation", e);
         }
     }

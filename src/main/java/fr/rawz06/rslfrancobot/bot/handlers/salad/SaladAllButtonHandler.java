@@ -1,4 +1,4 @@
-package fr.rawz06.rslfrancobot.bot.handlers;
+package fr.rawz06.rslfrancobot.bot.handlers.salad;
 
 import fr.rawz06.rslfrancobot.bot.models.DiscordInteraction;
 import fr.rawz06.rslfrancobot.bot.presenters.SeedPresenter;
@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * Handler for the S8 button.
- * Directly generates an S8 seed with fixed settings from s8.json (no user options).
+ * Handler for the Mix button.
+ * Directly generates an Mix seed with fixed settings from salad.json (no user options).
  */
 @Component
-public class S8ButtonHandler {
+public class SaladAllButtonHandler {
 
     private final SeedService seedService;
     private final SeedPresenter presenter;
 
-    public S8ButtonHandler(SeedService seedService, SeedPresenter presenter) {
+    public SaladAllButtonHandler(SeedService seedService, SeedPresenter presenter) {
         this.seedService = seedService;
         this.presenter = presenter;
     }
@@ -29,15 +29,15 @@ public class S8ButtonHandler {
             // Defer immediately as generation takes time
             interaction.defer();
 
-            // Generate seed with fixed settings from s8.json
+            // Generate seed with fixed settings from s9.json
             SeedResult result = seedService.generateSeed(
-                    SeedMode.S8,
+                    SeedMode.SALAD_ALL,
                     interaction.getUserId(),
                     Map.of()
             );
 
             // Send final result as channel message (persists after cleanup)
-            interaction.sendChannelMessage(presenter.presentSeedResult(result, "S8", interaction.getUsername()));
+            interaction.sendChannelMessage(presenter.presentSeedResult(result, "Salade en folie", interaction.getUsername()));
 
             // Delete interaction messages to keep channel clean
             interaction.deleteOriginalMessage();

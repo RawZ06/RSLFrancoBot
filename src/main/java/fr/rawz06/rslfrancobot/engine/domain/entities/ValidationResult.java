@@ -1,5 +1,7 @@
 package fr.rawz06.rslfrancobot.engine.domain.entities;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
  * Result of user settings validation.
  * Indicates whether the configuration is valid and contains any errors.
  */
+@Getter
 public class ValidationResult {
     private final boolean valid;
     private final List<String> errors;
@@ -30,14 +33,6 @@ public class ValidationResult {
 
     public static ValidationResult failure(String error) {
         return failure(List.of(error));
-    }
-
-    public boolean isValid() {
-        return valid;
-    }
-
-    public List<String> getErrors() {
-        return errors;
     }
 
     public String getErrorMessage() {

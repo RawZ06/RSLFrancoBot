@@ -1,4 +1,4 @@
-package fr.rawz06.rslfrancobot.bot.handlers;
+package fr.rawz06.rslfrancobot.bot.handlers.franco;
 
 import fr.rawz06.rslfrancobot.bot.models.DiscordButton;
 import fr.rawz06.rslfrancobot.bot.models.DiscordInteraction;

@@ -1,4 +1,4 @@
-package fr.rawz06.rslfrancobot.bot.handlers;
+package fr.rawz06.rslfrancobot.bot.handlers.salad;
 
 import fr.rawz06.rslfrancobot.bot.models.DiscordInteraction;
 import fr.rawz06.rslfrancobot.bot.presenters.SeedPresenter;
@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * Handler for the Beginner button.
- * Directly generates a Beginner seed (no user options).
+ * Handler for the Rupee button.
+ * Directly generates an Rupee seed with fixed settings from salad.json (no user options).
  */
 @Component
-public class BeginnerButtonHandler {
+public class SaladRupeeButtonHandler {
 
     private final SeedService seedService;
     private final SeedPresenter presenter;
 
-    public BeginnerButtonHandler(SeedService seedService, SeedPresenter presenter) {
+    public SaladRupeeButtonHandler(SeedService seedService, SeedPresenter presenter) {
         this.seedService = seedService;
         this.presenter = presenter;
     }
@@ -29,15 +29,15 @@ public class BeginnerButtonHandler {
             // Defer immediately as generation takes time
             interaction.defer();
 
-            // Generate seed (blocking, simulates slow HTTP call)
+            // Generate seed with fixed settings from s9.json
             SeedResult result = seedService.generateSeed(
-                    SeedMode.BEGINNER,
+                    SeedMode.SALAD_RUPEES,
                     interaction.getUserId(),
                     Map.of()
             );
 
             // Send final result as channel message (persists after cleanup)
-            interaction.sendChannelMessage(presenter.presentSeedResult(result, "Beginner", interaction.getUsername()));
+            interaction.sendChannelMessage(presenter.presentSeedResult(result, "Rubis en folie", interaction.getUsername()));
 
             // Delete interaction messages to keep channel clean
             interaction.deleteOriginalMessage();

@@ -1,6 +1,20 @@
 package fr.rawz06.rslfrancobot.api.discord;
 
 import fr.rawz06.rslfrancobot.bot.handlers.*;
+import fr.rawz06.rslfrancobot.bot.handlers.allsanity.AllsanityErButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.allsanity.AllsanityErDecoupledButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.allsanity.AllsanityOnlyButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.franco.FrancoButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.franco.FrancoRandomHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.franco.FrancoSelectMenuHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.franco.FrancoValidateHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.rsl.BeginnerButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.rsl.PoTButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.rsl.RSLButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.salad.*;
+import fr.rawz06.rslfrancobot.bot.handlers.std.S8ButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.std.S9ButtonHandler;
+import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
@@ -14,11 +28,14 @@ import org.springframework.stereotype.Component;
  * Fait le pont entre JDA et notre architecture clean.
  */
 @Component
+@RequiredArgsConstructor
 public class JDAEventListener extends ListenerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(JDAEventListener.class);
 
     private final SeedCommandHandler seedCommandHandler;
+    private final SaladCommandHandler saladCommandHandler;
+    private final AllCommandHandler allCommandHandler;
     private final FrancoButtonHandler francoButtonHandler;
     private final RSLButtonHandler rslButtonHandler;
     private final PoTButtonHandler potButtonHandler;
@@ -31,36 +48,12 @@ public class JDAEventListener extends ListenerAdapter {
     private final FrancoValidateHandler francoValidateHandler;
     private final FrancoSelectMenuHandler francoSelectMenuHandler;
     private final FrancoRandomHandler francoRandomHandler;
-
-    public JDAEventListener(
-            SeedCommandHandler seedCommandHandler,
-            FrancoButtonHandler francoButtonHandler,
-            RSLButtonHandler rslButtonHandler,
-            PoTButtonHandler potButtonHandler,
-            BeginnerButtonHandler beginnerButtonHandler,
-            S8ButtonHandler s8ButtonHandler,
-            S9ButtonHandler s9ButtonHandler,
-            AllsanityErDecoupledButtonHandler allsanityErDecoupledButtonHandler,
-            AllsanityErButtonHandler allsanityErButtonHandler,
-            AllsanityOnlyButtonHandler allsanityOnlyButtonHandler,
-            FrancoValidateHandler francoValidateHandler,
-            FrancoSelectMenuHandler francoSelectMenuHandler,
-            FrancoRandomHandler francoRandomHandler
-    ) {
-        this.seedCommandHandler = seedCommandHandler;
-        this.francoButtonHandler = francoButtonHandler;
-        this.rslButtonHandler = rslButtonHandler;
-        this.potButtonHandler = potButtonHandler;
-        this.beginnerButtonHandler = beginnerButtonHandler;
-        this.s8ButtonHandler = s8ButtonHandler;
-        this.s9ButtonHandler = s9ButtonHandler;
-        this.allsanityErDecoupledButtonHandler = allsanityErDecoupledButtonHandler;
-        this.allsanityErButtonHandler = allsanityErButtonHandler;
-        this.allsanityOnlyButtonHandler = allsanityOnlyButtonHandler;
-        this.francoValidateHandler = francoValidateHandler;
-        this.francoSelectMenuHandler = francoSelectMenuHandler;
-        this.francoRandomHandler = francoRandomHandler;
-    }
+    private final SaladBossButtonHandler saladBossButtonHandler;
+    private final SaladRupeeButtonHandler saladRupeeButtonHandler;
+    private final SaladDungeonButtonHandler saladDungeonButtonHandler;
+    private final SaladSongsButtonHandler saladSongsButtonHandler;
+    private final SaladMixButtonHandler saladMixButtonHandler;
+    private final SaladAllButtonHandler saladAllButtonHandler;
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
@@ -68,9 +61,19 @@ public class JDAEventListener extends ListenerAdapter {
         logger.info("Command received: {} by {}", commandName, event.getUser().getName());
 
         try {
-            if ("seed".equals(commandName)) {
-                var interaction = JDASlashCommandAdapter.from(event);
-                seedCommandHandler.handle(interaction);
+            switch (commandName) {
+                case "seed" -> {
+                    var interaction = JDASlashCommandAdapter.from(event);
+                    seedCommandHandler.handle(interaction);
+                }
+                case "salad" -> {
+                    var interaction = JDASlashCommandAdapter.from(event);
+                    saladCommandHandler.handle(interaction);
+                }
+                case "all" -> {
+                    var interaction = JDASlashCommandAdapter.from(event);
+                    allCommandHandler.handle(interaction);
+                }
             }
         } catch (Exception e) {
             logger.error("Error processing command: {}", commandName, e);
@@ -108,6 +111,12 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_allsanity_er_decoupled" -> allsanityErDecoupledButtonHandler.handle(interaction);
                 case "seed_allsanity_er" -> allsanityErButtonHandler.handle(interaction);
                 case "seed_allsanity_only" -> allsanityOnlyButtonHandler.handle(interaction);
+                case "seed_salad_boss" -> saladBossButtonHandler.handle(interaction);
+                case "seed_salad_rupee" -> saladRupeeButtonHandler.handle(interaction);
+                case "seed_salad_songs" -> saladSongsButtonHandler.handle(interaction);
+                case "seed_salad_dungeon" -> saladDungeonButtonHandler.handle(interaction);
+                case "seed_salad_mix" -> saladMixButtonHandler.handle(interaction);
+                case "seed_salad_all" -> saladAllButtonHandler.handle(interaction);
                 case "franco_validate" -> francoValidateHandler.handle(interaction);
                 case "franco_random" -> francoRandomHandler.showNumberSelection(interaction);
                 case "franco_cancel" -> event.reply("Generation cancelled.").setEphemeral(true).queue();

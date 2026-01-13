@@ -42,6 +42,9 @@ public class RandomizerApiService {
     @Value("${app.randomizer.api.version.allsanity}")
     private String versionAllsanity;
 
+    @Value("${app.randomizer.api.version.salad}")
+    private String versionSalad;
+
     private final ObjectMapper objectMapper;
 
     public RandomizerApiService(ObjectMapper objectMapper) {
@@ -58,6 +61,7 @@ public class RandomizerApiService {
             case S8 -> versionS8;
             case S9 -> versionS9;
             case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> versionAllsanity;
+            case SALAD_BOSS,  SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> versionSalad;
         };
     }
 

@@ -1,4 +1,4 @@
-package fr.rawz06.rslfrancobot.bot.handlers;
+package fr.rawz06.rslfrancobot.bot.handlers.std;
 
 import fr.rawz06.rslfrancobot.bot.models.DiscordInteraction;
 import fr.rawz06.rslfrancobot.bot.presenters.SeedPresenter;
@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * Handler for the Allsanity + ER decoupled button.
- * Directly generates an Allsanity + ER decoupled seed with fixed settings.
+ * Handler for the S9 button.
+ * Directly generates an S9 seed with fixed settings from s9.json (no user options).
  */
 @Component
-public class AllsanityErDecoupledButtonHandler {
+public class S9ButtonHandler {
 
     private final SeedService seedService;
     private final SeedPresenter presenter;
 
-    public AllsanityErDecoupledButtonHandler(SeedService seedService, SeedPresenter presenter) {
+    public S9ButtonHandler(SeedService seedService, SeedPresenter presenter) {
         this.seedService = seedService;
         this.presenter = presenter;
     }
@@ -29,15 +29,15 @@ public class AllsanityErDecoupledButtonHandler {
             // Defer immediately as generation takes time
             interaction.defer();
 
-            // Generate seed with fixed settings from allsanity.json
+            // Generate seed with fixed settings from s9.json
             SeedResult result = seedService.generateSeed(
-                    SeedMode.ALLSANITY_ER_DECOUPLED,
+                    SeedMode.S9,
                     interaction.getUserId(),
                     Map.of()
             );
 
             // Send final result as channel message (persists after cleanup)
-            interaction.sendChannelMessage(presenter.presentSeedResult(result, "Allsanity + ER decoupled", interaction.getUsername()));
+            interaction.sendChannelMessage(presenter.presentSeedResult(result, "S9", interaction.getUsername()));
 
             // Delete interaction messages to keep channel clean
             interaction.deleteOriginalMessage();

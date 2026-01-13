@@ -38,13 +38,47 @@ public class SeedPresenter {
         );
         message.addButtonRow(rslRow);
 
-        // Third row: Allsanity modes
+        return message;
+    }
+
+    /**
+     * Creates the initial seed mode selection message.
+     */
+    public DiscordMessage presentModeAllSelection() {
+        DiscordMessage message = new DiscordMessage("What type of seed do you want to generate?");
+
+        // First row: Allsanity modes
         List<DiscordButton> allsanityRow = List.of(
-            new DiscordButton("Allsanity + ER decoupled", "seed_allsanity_er_decoupled", DiscordButton.Style.SECONDARY),
-            new DiscordButton("Allsanity + ER", "seed_allsanity_er", DiscordButton.Style.SECONDARY),
-            new DiscordButton("Allsanity only", "seed_allsanity_only", DiscordButton.Style.SECONDARY)
+                new DiscordButton("Allsanity + ER decoupled", "seed_allsanity_er_decoupled", DiscordButton.Style.SECONDARY),
+                new DiscordButton("Allsanity + ER", "seed_allsanity_er", DiscordButton.Style.SECONDARY),
+                new DiscordButton("Allsanity only", "seed_allsanity_only", DiscordButton.Style.SECONDARY)
         );
         message.addButtonRow(allsanityRow);
+
+        return message;
+    }
+
+    /**
+     * Creates the initial seed mode selection message.
+     */
+    public DiscordMessage presentModeSaladSelection() {
+        DiscordMessage message = new DiscordMessage("What type of seed do you want to generate?");
+
+        // first row: Salad modes (first part)
+        List<DiscordButton> saladRow = List.of(
+                new DiscordButton("Boss en folie", "seed_salad_boss", DiscordButton.Style.SECONDARY),
+                new DiscordButton("Rubis en folie", "seed_salad_rupee", DiscordButton.Style.SECONDARY),
+                new DiscordButton("Chant en folie", "seed_salad_songs", DiscordButton.Style.SECONDARY)
+        );
+        message.addButtonRow(saladRow);
+
+        // second row: Salad modes (second part)
+        List<DiscordButton> salad2Row = List.of(
+                new DiscordButton("Donjon en folie", "seed_salad_dungeon", DiscordButton.Style.SECONDARY),
+                new DiscordButton("Mix en folie", "seed_salad_mix", DiscordButton.Style.SECONDARY),
+                new DiscordButton("Salade en folie", "seed_salad_all", DiscordButton.Style.SECONDARY)
+        );
+        message.addButtonRow(salad2Row);
 
         return message;
     }

@@ -1,4 +1,4 @@
-package fr.rawz06.rslfrancobot.bot.handlers;
+package fr.rawz06.rslfrancobot.bot.handlers.std;
 
 import fr.rawz06.rslfrancobot.bot.models.DiscordInteraction;
 import fr.rawz06.rslfrancobot.bot.presenters.SeedPresenter;
@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * Handler for the Allsanity only button.
- * Directly generates an Allsanity only seed with all ER settings disabled.
+ * Handler for the S8 button.
+ * Directly generates an S8 seed with fixed settings from s8.json (no user options).
  */
 @Component
-public class AllsanityOnlyButtonHandler {
+public class S8ButtonHandler {
 
     private final SeedService seedService;
     private final SeedPresenter presenter;
 
-    public AllsanityOnlyButtonHandler(SeedService seedService, SeedPresenter presenter) {
+    public S8ButtonHandler(SeedService seedService, SeedPresenter presenter) {
         this.seedService = seedService;
         this.presenter = presenter;
     }
@@ -29,15 +29,15 @@ public class AllsanityOnlyButtonHandler {
             // Defer immediately as generation takes time
             interaction.defer();
 
-            // Generate seed with all ER settings disabled
+            // Generate seed with fixed settings from s8.json
             SeedResult result = seedService.generateSeed(
-                    SeedMode.ALLSANITY_ONLY,
+                    SeedMode.S8,
                     interaction.getUserId(),
                     Map.of()
             );
 
             // Send final result as channel message (persists after cleanup)
-            interaction.sendChannelMessage(presenter.presentSeedResult(result, "Allsanity only", interaction.getUsername()));
+            interaction.sendChannelMessage(presenter.presentSeedResult(result, "S8", interaction.getUsername()));
 
             // Delete interaction messages to keep channel clean
             interaction.deleteOriginalMessage();

@@ -1,4 +1,4 @@
-package fr.rawz06.rslfrancobot.bot.handlers;
+package fr.rawz06.rslfrancobot.bot.handlers.allsanity;
 
 import fr.rawz06.rslfrancobot.bot.models.DiscordInteraction;
 import fr.rawz06.rslfrancobot.bot.presenters.SeedPresenter;
@@ -10,34 +10,34 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * Handler for the RSL button.
- * Directly generates an RSL seed (no user options).
+ * Handler for the Allsanity + ER button.
+ * Directly generates an Allsanity + ER seed with decouple_entrances set to false.
  */
 @Component
-public class RSLButtonHandler {
+public class AllsanityErButtonHandler {
 
     private final SeedService seedService;
     private final SeedPresenter presenter;
 
-    public RSLButtonHandler(SeedService seedService, SeedPresenter presenter) {
+    public AllsanityErButtonHandler(SeedService seedService, SeedPresenter presenter) {
         this.seedService = seedService;
         this.presenter = presenter;
     }
 
     public void handle(DiscordInteraction interaction) {
         try {
-            // Defer immediately as generation takes time (5s simulated)
+            // Defer immediately as generation takes time
             interaction.defer();
 
-            // Generate seed (blocking, simulates slow HTTP call)
+            // Generate seed with modified settings (decouple_entrances: false)
             SeedResult result = seedService.generateSeed(
-                    SeedMode.RSL,
+                    SeedMode.ALLSANITY_ER,
                     interaction.getUserId(),
                     Map.of()
             );
 
             // Send final result as channel message (persists after cleanup)
-            interaction.sendChannelMessage(presenter.presentSeedResult(result, "RSL", interaction.getUsername()));
+            interaction.sendChannelMessage(presenter.presentSeedResult(result, "Allsanity + ER", interaction.getUsername()));
 
             // Delete interaction messages to keep channel clean
             interaction.deleteOriginalMessage();
