@@ -14,12 +14,12 @@ import java.util.Map;
  * Directly generates an Boss seed with fixed settings from salad.json (no user options).
  */
 @Component
-public class SaladBossButtonHandler {
+public class SaladEnemyButtonHandler {
 
     private final SeedService seedService;
     private final SeedPresenter presenter;
 
-    public SaladBossButtonHandler(SeedService seedService, SeedPresenter presenter) {
+    public SaladEnemyButtonHandler(SeedService seedService, SeedPresenter presenter) {
         this.seedService = seedService;
         this.presenter = presenter;
     }
@@ -31,13 +31,13 @@ public class SaladBossButtonHandler {
 
             // Generate seed with fixed settings from s9.json
             SeedResult result = seedService.generateSeed(
-                    SeedMode.SALAD_BOSS,
+                    SeedMode.SALAD_ENEMY,
                     interaction.getUserId(),
                     Map.of()
             );
 
             // Send final result as channel message (persists after cleanup)
-            interaction.sendChannelMessage(presenter.presentSeedResult(result, "Boss en folie", interaction.getUsername()));
+            interaction.sendChannelMessage(presenter.presentSeedResult(result, "Monstre en folie", interaction.getUsername()));
 
             // Delete interaction messages to keep channel clean
             interaction.deleteOriginalMessage();

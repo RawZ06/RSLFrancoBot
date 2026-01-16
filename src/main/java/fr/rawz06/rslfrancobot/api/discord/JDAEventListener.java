@@ -48,7 +48,8 @@ public class JDAEventListener extends ListenerAdapter {
     private final FrancoValidateHandler francoValidateHandler;
     private final FrancoSelectMenuHandler francoSelectMenuHandler;
     private final FrancoRandomHandler francoRandomHandler;
-    private final SaladBossButtonHandler saladBossButtonHandler;
+    private final SaladNatureButtonHandler saladNatureButtonHandler;
+    private final SaladEnemyButtonHandler saladEnemyButtonHandler;
     private final SaladRupeeButtonHandler saladRupeeButtonHandler;
     private final SaladDungeonButtonHandler saladDungeonButtonHandler;
     private final SaladSongsButtonHandler saladSongsButtonHandler;
@@ -111,7 +112,8 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_allsanity_er_decoupled" -> allsanityErDecoupledButtonHandler.handle(interaction);
                 case "seed_allsanity_er" -> allsanityErButtonHandler.handle(interaction);
                 case "seed_allsanity_only" -> allsanityOnlyButtonHandler.handle(interaction);
-                case "seed_salad_boss" -> saladBossButtonHandler.handle(interaction);
+                case "seed_salad_enemy" -> saladEnemyButtonHandler.handle(interaction);
+                case "seed_salad_nature" -> saladNatureButtonHandler.handle(interaction);
                 case "seed_salad_rupee" -> saladRupeeButtonHandler.handle(interaction);
                 case "seed_salad_songs" -> saladSongsButtonHandler.handle(interaction);
                 case "seed_salad_dungeon" -> saladDungeonButtonHandler.handle(interaction);

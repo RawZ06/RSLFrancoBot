@@ -31,6 +31,8 @@ public class GenerateSaladSeedUseCase {
     private final CustomSaladDungeonUseCase customSaladDungeonUseCase;
     private final CustomSaladSongsUseCase customSaladSongsUseCase;
     private final CustomSaladMixUseCase customSaladMixUseCase;
+    private final CustomSaladEnemyUseCase customSaladEnemyUseCase;
+    private final CustomSaladNatureUseCase customSaladNatureUseCase;
 
     public SeedResult execute(SeedRequest request) throws GenerationException {
         // 1. Retrieve salad preset (contains fixed settings from salad.json)
@@ -42,9 +44,6 @@ public class GenerateSaladSeedUseCase {
 
         // 3. Apply mode-specific modifications
         switch (request.mode()) {
-            case SALAD_BOSS:
-                customSaladBossUseCase.custom(settings);
-                break;
             case SALAD_RUPEES:
                 customSaladRupeeUseCase.custom(settings);
                 break;
@@ -56,6 +55,12 @@ public class GenerateSaladSeedUseCase {
                 break;
             case SALAD_MIX:
                 customSaladMixUseCase.custom(settings);
+                break;
+            case SALAD_ENEMY:
+                customSaladEnemyUseCase.custom(settings);
+                break;
+            case SALAD_NATURE:
+                customSaladNatureUseCase.custom(settings);
                 break;
             case SALAD_ALL:
                 customSaladBossUseCase.custom(settings);

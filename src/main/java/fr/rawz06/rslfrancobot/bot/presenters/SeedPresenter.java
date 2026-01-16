@@ -66,7 +66,7 @@ public class SeedPresenter {
 
         // first row: Salad modes (first part)
         List<DiscordButton> saladRow = List.of(
-                new DiscordButton("Boss en folie", "seed_salad_boss", DiscordButton.Style.SECONDARY),
+                new DiscordButton("Monstre en folie", "seed_salad_enemy", DiscordButton.Style.SECONDARY),
                 new DiscordButton("Rubis en folie", "seed_salad_rupee", DiscordButton.Style.SECONDARY),
                 new DiscordButton("Chant en folie", "seed_salad_songs", DiscordButton.Style.SECONDARY)
         );
@@ -79,6 +79,12 @@ public class SeedPresenter {
                 new DiscordButton("Salade en folie", "seed_salad_all", DiscordButton.Style.SECONDARY)
         );
         message.addButtonRow(salad2Row);
+
+        // third row: Salad modes (second part)
+        List<DiscordButton> salad3Row = List.of(
+                new DiscordButton("Nature en folie", "seed_salad_nature", DiscordButton.Style.SECONDARY)
+        );
+        message.addButtonRow(salad3Row);
 
         return message;
     }

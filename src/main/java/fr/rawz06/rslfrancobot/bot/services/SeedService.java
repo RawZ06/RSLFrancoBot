@@ -46,7 +46,7 @@ public class SeedService {
                 case S8 -> generateS8SeedUseCase.execute(request);
                 case S9 -> generateS9SeedUseCase.execute(request);
                 case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> generateAllsanitySeedUseCase.execute(request);
-                case SALAD_BOSS,  SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> generateSaladSeedUseCase.execute(request);
+                case SALAD_NATURE, SALAD_ENEMY, SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> generateSaladSeedUseCase.execute(request);
             };
         } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException | GenerateS8SeedUseCase.GenerationException | GenerateS9SeedUseCase.GenerationException | GenerateAllsanitySeedUseCase.GenerationException | GenerateSaladSeedUseCase.GenerationException e) {
             throw new SeedGenerationException("Error during seed generation", e);
