@@ -213,7 +213,7 @@
     "minor_items_as_major_chest": [],
     "invisible_chests": false,
     "correct_potcrate_appearances": "off",
-    "key_appearance_match_dungeon": false,
+    "key_appearance_match_dungeon": true,
     "potcrate_textures_specific": [],
     "soa_unlocks_potcrate_texture": false,
     "ocarina_songs": [],
