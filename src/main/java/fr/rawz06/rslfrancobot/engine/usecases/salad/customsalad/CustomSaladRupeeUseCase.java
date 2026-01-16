@@ -15,5 +15,6 @@ public class CustomSaladRupeeUseCase {
         settings.put("shuffle_beans", true);
         settings.put("shuffle_expensive_merchants", true);
         settings.put("start_with_rupees", true);
+        settings.put("correct_potcrate_appearances", "textures_unchecked");
     }
 }

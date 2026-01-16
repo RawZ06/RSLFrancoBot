@@ -7,7 +7,7 @@ import java.util.Map;
 @Component
 public class CustomSaladDungeonUseCase {
     public void custom(Map<String, Object> settings) {
-        settings.put("shuffle_dungeon_entrances", "simple");
+        settings.put("shuffle_dungeon_entrances", "all");
         settings.put("shuffle_bosses", "full");
         settings.put("tokensanity", "dungeons");
         settings.put("keyring_give_bk", true);
