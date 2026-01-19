@@ -13,5 +13,6 @@ public class CustomSaladNatureUseCase {
         settings.put("tokensanity", "all");
         settings.put("shuffle_grass", true);
         settings.put("shuffle_beehives", true);
+        settings.put("correct_potcrate_appearances", "textures_unchecked");
     }
 }
