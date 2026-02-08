@@ -45,6 +45,9 @@ public class RandomizerApiService {
     @Value("${app.randomizer.api.version.salad}")
     private String versionSalad;
 
+    @Value("${app.randomizer.api.version.tot}")
+    private String versionTot;
+
     @Value("${app.randomizer.api.version.enemySalad}")
     private String versionEnemy;
 
@@ -65,6 +68,7 @@ public class RandomizerApiService {
             case S9 -> versionS9;
             case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> versionAllsanity;
             case SALAD_NATURE, SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> versionSalad;
+            case TOT -> versionTot;
             case SALAD_ENEMY -> versionEnemy;
         };
     }

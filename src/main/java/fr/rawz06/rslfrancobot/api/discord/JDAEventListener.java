@@ -14,6 +14,7 @@ import fr.rawz06.rslfrancobot.bot.handlers.rsl.RSLButtonHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.salad.*;
 import fr.rawz06.rslfrancobot.bot.handlers.std.S8ButtonHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.std.S9ButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.std.TotButtonHandler;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -55,6 +56,7 @@ public class JDAEventListener extends ListenerAdapter {
     private final SaladSongsButtonHandler saladSongsButtonHandler;
     private final SaladMixButtonHandler saladMixButtonHandler;
     private final SaladAllButtonHandler saladAllButtonHandler;
+    private final TotButtonHandler totButtonHandler;
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
@@ -109,6 +111,7 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_beginner" -> beginnerButtonHandler.handle(interaction);
                 case "seed_s8" -> s8ButtonHandler.handle(interaction);
                 case "seed_s9" -> s9ButtonHandler.handle(interaction);
+                case "seed_tot" -> totButtonHandler.handle(interaction);
                 case "seed_allsanity_er_decoupled" -> allsanityErDecoupledButtonHandler.handle(interaction);
                 case "seed_allsanity_er" -> allsanityErButtonHandler.handle(interaction);
                 case "seed_allsanity_only" -> allsanityOnlyButtonHandler.handle(interaction);

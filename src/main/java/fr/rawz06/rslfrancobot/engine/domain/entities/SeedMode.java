@@ -20,4 +20,5 @@ public enum SeedMode {
     SALAD_ENEMY,
     SALAD_NATURE,
     SALAD_ALL,
+    TOT,
 }

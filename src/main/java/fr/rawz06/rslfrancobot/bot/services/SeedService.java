@@ -11,6 +11,7 @@ import fr.rawz06.rslfrancobot.engine.usecases.rsl.GenerateRSLSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.s8.GenerateS8SeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.s9.GenerateS9SeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.salad.GenerateSaladSeedUseCase;
+import fr.rawz06.rslfrancobot.engine.usecases.tot.GenerateTotSeedUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class SeedService {
     private final GenerateAllsanitySeedUseCase generateAllsanitySeedUseCase;
     private final GenerateSaladSeedUseCase generateSaladSeedUseCase;
     private final IPresetRepository presetRepository;
+    private final GenerateTotSeedUseCase generateTotSeedUseCase;
 
     /**
      * Generates a seed according to the requested mode.
@@ -47,8 +49,12 @@ public class SeedService {
                 case S9 -> generateS9SeedUseCase.execute(request);
                 case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> generateAllsanitySeedUseCase.execute(request);
                 case SALAD_NATURE, SALAD_ENEMY, SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> generateSaladSeedUseCase.execute(request);
+                case TOT -> generateTotSeedUseCase.execute(request);
             };
-        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException | GenerateS8SeedUseCase.GenerationException | GenerateS9SeedUseCase.GenerationException | GenerateAllsanitySeedUseCase.GenerationException | GenerateSaladSeedUseCase.GenerationException e) {
+        } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException |
+                 GenerateS8SeedUseCase.GenerationException | GenerateS9SeedUseCase.GenerationException |
+                 GenerateAllsanitySeedUseCase.GenerationException | GenerateSaladSeedUseCase.GenerationException |
+                 GenerateTotSeedUseCase.GenerationException e) {
             throw new SeedGenerationException("Error during seed generation", e);
         }
     }

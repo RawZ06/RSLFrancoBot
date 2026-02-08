@@ -18,6 +18,6 @@ public class SeedCommandHandler {
     }
 
     public void handle(DiscordInteraction interaction) {
-        interaction.reply(presenter.presentModeSelection());
+        interaction.reply(presenter.presentModeSelection(interaction.getUsername()));
     }
 }

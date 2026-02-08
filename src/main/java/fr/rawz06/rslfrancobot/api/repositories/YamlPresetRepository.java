@@ -38,6 +38,7 @@ public class YamlPresetRepository implements IPresetRepository {
             loadS9Preset();
             loadAllsanityPreset();
             loadSaladPreset();
+            loadTotPreset();
             logger.info("Presets loaded successfully: {}", presets.keySet());
         } catch (Exception e) {
             logger.error("Error loading presets", e);
@@ -107,6 +108,17 @@ public class YamlPresetRepository implements IPresetRepository {
             presets.put("s9", s9Preset);
         } catch (Exception e) {
             logger.error("Error loading S9 preset", e);
+        }
+    }
+
+    private void loadTotPreset() {
+        // For Tot: fixed settings from tot.json, no user options
+        try {
+            Map<String, Object> baseSettings = loadJsonFile("data/tot.json");
+            Preset s9Preset = new Preset("tot", baseSettings, List.of());
+            presets.put("tot", s9Preset);
+        } catch (Exception e) {
+            logger.error("Error loading Tot preset", e);
         }
     }
 

@@ -5,8 +5,11 @@ import fr.rawz06.rslfrancobot.bot.models.DiscordMessage;
 import fr.rawz06.rslfrancobot.bot.models.DiscordSelectMenu;
 import fr.rawz06.rslfrancobot.engine.domain.entities.Preset;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
+import fr.rawz06.rslfrancobot.engine.usecases.visibility.GetUserAvailableGenerateUseCase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,20 +17,26 @@ import java.util.List;
  * Transforme les objets du domaine en messages Discord.
  */
 @Component
+@RequiredArgsConstructor
 public class SeedPresenter {
+
+    private final GetUserAvailableGenerateUseCase  getUserAvailableGenerateUseCase;
 
     /**
      * Creates the initial seed mode selection message.
      */
-    public DiscordMessage presentModeSelection() {
+    public DiscordMessage presentModeSelection(String username) {
         DiscordMessage message = new DiscordMessage("What type of seed do you want to generate?");
 
         // First row: Classic modes
-        List<DiscordButton> classicRow = List.of(
-            new DiscordButton("Franco (classic)", "seed_franco", DiscordButton.Style.PRIMARY),
-            new DiscordButton("S8", "seed_s8", DiscordButton.Style.PRIMARY),
-            new DiscordButton("S9", "seed_s9", DiscordButton.Style.PRIMARY)
-        );
+        List<DiscordButton> classicRow = new ArrayList<>(List.of(
+                new DiscordButton("Franco (classic)", "seed_franco", DiscordButton.Style.PRIMARY),
+                new DiscordButton("S8", "seed_s8", DiscordButton.Style.PRIMARY),
+                new DiscordButton("S9", "seed_s9", DiscordButton.Style.PRIMARY)
+        ));
+        if(getUserAvailableGenerateUseCase.available(username, "tot")) {
+            classicRow.add(new DiscordButton("ToT", "seed_tot", DiscordButton.Style.PRIMARY));
+        }
         message.addButtonRow(classicRow);
 
         // Second row: RSL modes
