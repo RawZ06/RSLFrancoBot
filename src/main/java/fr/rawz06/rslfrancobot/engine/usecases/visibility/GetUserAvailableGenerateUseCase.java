@@ -8,7 +8,7 @@ import java.util.Map;
 @Component
 public class GetUserAvailableGenerateUseCase {
 
-    Map<String, List<String>> availability = Map.of("tot", List.of("rawz06", "barbu", "skols"));
+    Map<String, List<String>> availability = Map.of("tot_before", List.of("rawz06", "barbu", "skols"));
 
     public boolean available(String user, String preset) {
         return availability.get(preset).contains(user);

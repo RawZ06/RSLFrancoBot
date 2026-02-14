@@ -34,9 +34,7 @@ public class SeedPresenter {
                 new DiscordButton("S8", "seed_s8", DiscordButton.Style.PRIMARY),
                 new DiscordButton("S9", "seed_s9", DiscordButton.Style.PRIMARY)
         ));
-        if(getUserAvailableGenerateUseCase.available(username, "tot")) {
-            classicRow.add(new DiscordButton("ToT", "seed_tot", DiscordButton.Style.PRIMARY));
-        }
+        classicRow.add(new DiscordButton("ToT", "seed_tot", DiscordButton.Style.PRIMARY));
         message.addButtonRow(classicRow);
 
         // Second row: RSL modes
