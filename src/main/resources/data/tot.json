@@ -148,14 +148,8 @@
   ],
   "starting_songs": [],
   "add_random_starting_items": false,
-  "random_starting_items_exclude": [
-    "bombchus",
-    "shields",
-    "deku_upgrades",
-    "health_upgrades",
-    "junk"
-  ],
-  "random_starting_items_count": 1,
+  "random_starting_items_exclude": [],
+  "random_starting_items_count": 0,
   "start_with_consumables": true,
   "start_with_rupees": false,
   "starting_hearts": 3,
