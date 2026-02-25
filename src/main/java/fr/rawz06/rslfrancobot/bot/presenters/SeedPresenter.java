@@ -5,8 +5,9 @@ import fr.rawz06.rslfrancobot.bot.models.DiscordMessage;
 import fr.rawz06.rslfrancobot.bot.models.DiscordSelectMenu;
 import fr.rawz06.rslfrancobot.engine.domain.entities.Preset;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
-import fr.rawz06.rslfrancobot.engine.usecases.visibility.GetUserAvailableGenerateUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SeedPresenter {
 
-    private final GetUserAvailableGenerateUseCase  getUserAvailableGenerateUseCase;
+    @Value("${app.version}")
+    private String appVersion;
 
     /**
      * Creates the initial seed mode selection message.
@@ -112,6 +114,9 @@ public class SeedPresenter {
             content.append("👁️ Spoilers: ").append(result.spoilers() ? "Yes" : "No");
         }
 
+        content.append("\n\n");
+        content.append("🤖Bot Version: ").append(appVersion);
+
         return new DiscordMessage(content.toString());
     }
 
@@ -140,6 +145,9 @@ public class SeedPresenter {
                 content.append("• ").append(optionId).append("\n");
             }
         }
+
+        content.append("\n\n");
+        content.append("🤖Bot Version: ").append(appVersion);
 
         return new DiscordMessage(content.toString());
     }
