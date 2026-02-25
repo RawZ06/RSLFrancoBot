@@ -260,7 +260,7 @@
       { "location": "Shadow Temple Invisible Blades Chests", "types": ["dual"] },
       { "location": "Shadow Temple Spike Walls Room", "types": ["dual"] },
       { "location": "Ganons Castle Spirit Trial Chests", "types": ["dual"] },
-      {"location": "Inside Ganon's Castle", "types": ["barren"]}
+      {"location": "inside Ganon's Castle", "types": ["barren"]}
     ],
     "add_items":             [],
     "remove_items":          [
