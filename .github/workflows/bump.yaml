@@ -28,54 +28,63 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Process version and create release
+      - name: Get current version
+        id: get-version
         run: |
-          echo "📦 Fetching current version..."
           CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "Current version: $CURRENT_VERSION"
-          
-          # Check if version ends with -SNAPSHOT
-          if [[ ! "$CURRENT_VERSION" =~ -SNAPSHOT$ ]]; then
-            echo "⚠️ Current version is not a SNAPSHOT version. Skipping release process."
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "📦 Current version: $CURRENT_VERSION"
+
+      - name: Check if SNAPSHOT
+        id: check
+        run: |
+          if [[ ! "${{ steps.get-version.outputs.current_version }}" =~ -SNAPSHOT$ ]]; then
+            echo "⚠️ Not a SNAPSHOT version, skipping"
+            echo "skip=true" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
-          # Remove -SNAPSHOT to get release version
-          RELEASE_VERSION=${CURRENT_VERSION%-SNAPSHOT}
+          RELEASE_VERSION="${{ steps.get-version.outputs.current_version }%-SNAPSHOT}"
+          echo "skip=false" >> $GITHUB_OUTPUT
+          echo "release_version=$RELEASE_VERSION" >> $GITHUB_OUTPUT
           echo "🚀 Release version: $RELEASE_VERSION"
-          
-          # Step 1: Set release version (remove -SNAPSHOT)
-          echo "📝 Setting release version $RELEASE_VERSION..."
-          mvn versions:set -DnewVersion=$RELEASE_VERSION -DgenerateBackupPoms=false
+
+      - name: Set release version
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          mvn versions:set -DnewVersion=${{ steps.check.outputs.release_version }} -DgenerateBackupPoms=false
+
+      - name: Commit release version
+        if: steps.check.outputs.skip == 'false'
+        run: |
           git add pom.xml
-          git commit -m "🔖 Release version $RELEASE_VERSION [skip ci]"
+          git commit -m "🔖 Release version ${{ steps.check.outputs.release_version }} [skip ci]"
           git push
-          
-          # Step 2: Create and push tag
-          echo "🏷️ Creating tag v$RELEASE_VERSION..."
-          git tag -a "v$RELEASE_VERSION" -m "Release version $RELEASE_VERSION"
-          git push origin "v$RELEASE_VERSION"
-          
-          # Trigger Dokploy deployment explicitly
-          echo "🚀 Triggering Dokploy deployment..."
-          curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}" || echo "⚠️ Webhook call failed, relying on auto-trigger"
-          
-          # Step 3: Prepare next development version
-          IFS='.' read -ra VERSION_PARTS <<< "$RELEASE_VERSION"
-          MAJOR=${VERSION_PARTS[0]}
-          MINOR=${VERSION_PARTS[1]}
-          PATCH=${VERSION_PARTS[2]}
-          
-          # Increment patch for next development version
-          NEXT_PATCH=$((PATCH + 1))
-          NEXT_DEV_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}-SNAPSHOT"
-          
-          echo "🔧 Preparing next development version: $NEXT_DEV_VERSION"
-          mvn versions:set -DnewVersion=$NEXT_DEV_VERSION -DgenerateBackupPoms=false
+
+      - name: Create and push tag
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          git tag -a "v${{ steps.check.outputs.release_version }}" -m "Release version ${{ steps.check.outputs.release_version }}"
+          git push origin "v${{ steps.check.outputs.release_version }}"
+
+      - name: Deploy to Dokploy via API
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          echo "🚀 Triggering Dokploy deployment via API..."
+          curl -X POST \
+            'https://${{ secrets.DOKPLOY_DOMAIN }}/api/application.deploy' \
+            -H 'accept: application/json' \
+            -H 'x-api-key: ${{ secrets.DOKPLOY_API_KEY }}' \
+            -H 'Content-Type: application/json' \
+            -d '{"applicationId": "${{ secrets.DOKPLOY_APP_ID }}"}'
+          echo "✅ Deployment triggered"
+
+      - name: Prepare next dev version
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          IFS='.' read -ra V <<< "${{ steps.check.outputs.release_version }}"
+          NEXT="${V[0]}.${V[1]}.$((V[2] + 1))-SNAPSHOT"
+          mvn versions:set -DnewVersion=$NEXT -DgenerateBackupPoms=false
           git add pom.xml
-          git commit -m "🔧 Prepare next development version $NEXT_DEV_VERSION [skip ci]"
+          git commit -m "🔧 Prepare next development version $NEXT [skip ci]"
           git push
-          
-          echo "✅ Release process completed!"
-          echo "   - Released: $RELEASE_VERSION"
-          echo "   - Next dev: $NEXT_DEV_VERSION"
+          echo "✅ Released ${{ steps.check.outputs.release_version }}, next: $NEXT"
