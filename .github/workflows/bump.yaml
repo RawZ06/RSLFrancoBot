@@ -56,6 +56,10 @@ jobs:
           git tag -a "v$RELEASE_VERSION" -m "Release version $RELEASE_VERSION"
           git push origin "v$RELEASE_VERSION"
           
+          # Trigger Dokploy deployment explicitly
+          echo "🚀 Triggering Dokploy deployment..."
+          curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}" || echo "⚠️ Webhook call failed, relying on auto-trigger"
+          
           # Step 3: Prepare next development version
           IFS='.' read -ra VERSION_PARTS <<< "$RELEASE_VERSION"
           MAJOR=${VERSION_PARTS[0]}
