@@ -30,40 +30,44 @@ jobs:
 
       - name: Increment patch version
         run: |
-          echo "📦 Récupération de la version actuelle..."
+          echo "📦 Fetching current version..."
           CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "Version actuelle: $CURRENT_VERSION"
+          echo "Current version: $CURRENT_VERSION"
           
-          # Retirer -SNAPSHOT si présent
+          # Remove -SNAPSHOT if present
           VERSION_BASE=${CURRENT_VERSION%-SNAPSHOT}
           
-          # Séparer major.minor.patch
+          # Split major.minor.patch
           IFS='.' read -ra VERSION_PARTS <<< "$VERSION_BASE"
           MAJOR=${VERSION_PARTS[0]}
           MINOR=${VERSION_PARTS[1]}
           PATCH=${VERSION_PARTS[2]}
           
-          # Incrémenter le patch
+          # Increment patch
           NEW_PATCH=$((PATCH + 1))
           NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
           
-          echo "🚀 Nouvelle version: $NEW_VERSION"
+          echo "🚀 New version: $NEW_VERSION"
           
-          # Mettre à jour le pom.xml
+          # Update pom.xml
           mvn versions:set -DnewVersion=$NEW_VERSION -DgenerateBackupPoms=false
           
-          # Vérifier si des changements ont été faits
+          # Check if changes were made
           if [[ -n $(git status -s) ]]; then
-            echo "✅ Commit de la nouvelle version..."
+            echo "✅ Committing new version..."
             git add pom.xml
             git commit -m "🔖 Bump version to $NEW_VERSION [skip ci]"
             git push
           
-            echo "🏷️ Création du tag v$NEW_VERSION..."
+            echo "🏷️ Creating tag v$NEW_VERSION..."
             git tag -a "v$NEW_VERSION" -m "Release version $NEW_VERSION"
             git push origin "v$NEW_VERSION"
           
-            echo "🎉 Version incrémentée avec succès: $NEW_VERSION"
+            echo "🎉 Version successfully incremented to: $NEW_VERSION"
           else
-            echo "ℹ️ Aucun changement de version nécessaire"
+            echo "ℹ️ No version change required"
           fi
+
+      - name: Trigger Dokploy Deployment
+        run: |
+            curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}"
