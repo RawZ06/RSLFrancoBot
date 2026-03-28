@@ -55,13 +55,13 @@ package fr.rawz06.rslfrancobot.api.randomizer;
 
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RandomizerApi;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 @Primary // Pour remplacer le Mock
-public class OotrHttpClient implements IRandomizerApi {
+public class OotrHttpClient implements RandomizerApi {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private static final String API_URL = "https://ootrandomizer.com/api/v2/seed";
@@ -100,7 +100,7 @@ package fr.rawz06.rslfrancobot.api.python;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.rawz06.rslfrancobot.engine.domain.entities.Preset;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRSLScriptRunner;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RSLScriptRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -109,7 +109,7 @@ import java.util.Map;
 
 @Component
 @Primary // Pour remplacer le Mock
-public class PythonRSLScriptRunner implements IRSLScriptRunner {
+public class PythonRSLScriptRunner implements RSLScriptRunner {
 
     private final ObjectMapper objectMapper;
 
@@ -126,9 +126,9 @@ public class PythonRSLScriptRunner implements IRSLScriptRunner {
 
             // 2. Lancer le script Python
             ProcessBuilder pb = new ProcessBuilder(
-                "python3",
-                "path/to/rsl_script.py",
-                tempInput.getAbsolutePath()
+                    "python3",
+                    "path/to/rsl_script.py",
+                    tempInput.getAbsolutePath()
             );
             pb.redirectErrorStream(true);
             Process process = pb.start();

@@ -4,14 +4,12 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.Preset;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedRequest;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IPresetRepository;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
-import fr.rawz06.rslfrancobot.engine.usecases.allsanity.GenerateAllsanitySeedUseCase;
+import fr.rawz06.rslfrancobot.engine.domain.ports.PresetRepository;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RandomizerApi;
 import fr.rawz06.rslfrancobot.engine.usecases.salad.customsalad.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +21,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GenerateSaladSeedUseCase {
 
-    private final IPresetRepository presetRepository;
-    private final IRandomizerApi randomizerApi;
+    private final PresetRepository presetRepository;
+    private final RandomizerApi randomizerApi;
 
     private final CustomSaladBossUseCase customSaladBossUseCase;
     private final CustomSaladRupeeUseCase customSaladRupeeUseCase;
@@ -82,7 +80,7 @@ public class GenerateSaladSeedUseCase {
         // 5. Generate seed via API
         try {
             return randomizerApi.generateSeed(request.mode(), settingsFile);
-        } catch (IRandomizerApi.RandomizerApiException e) {
+        } catch (RandomizerApi.RandomizerApiException e) {
             throw new GenerateSaladSeedUseCase.GenerationException("Error during seed generation", e);
         }
     }

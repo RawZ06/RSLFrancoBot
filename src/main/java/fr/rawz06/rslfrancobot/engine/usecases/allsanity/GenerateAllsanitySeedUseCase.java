@@ -1,13 +1,12 @@
 package fr.rawz06.rslfrancobot.engine.usecases.allsanity;
 
 import fr.rawz06.rslfrancobot.engine.domain.entities.*;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IPresetRepository;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
+import fr.rawz06.rslfrancobot.engine.domain.ports.PresetRepository;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RandomizerApi;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,12 +19,12 @@ import java.util.Map;
 @Component
 public class GenerateAllsanitySeedUseCase {
 
-    private final IPresetRepository presetRepository;
-    private final IRandomizerApi randomizerApi;
+    private final PresetRepository presetRepository;
+    private final RandomizerApi randomizerApi;
 
     public GenerateAllsanitySeedUseCase(
-            IPresetRepository presetRepository,
-            IRandomizerApi randomizerApi
+            PresetRepository presetRepository,
+            RandomizerApi randomizerApi
     ) {
         this.presetRepository = presetRepository;
         this.randomizerApi = randomizerApi;
@@ -77,7 +76,7 @@ public class GenerateAllsanitySeedUseCase {
         // 5. Generate seed via API
         try {
             return randomizerApi.generateSeed(request.mode(), settingsFile);
-        } catch (IRandomizerApi.RandomizerApiException e) {
+        } catch (RandomizerApi.RandomizerApiException e) {
             throw new GenerationException("Error during seed generation", e);
         }
     }

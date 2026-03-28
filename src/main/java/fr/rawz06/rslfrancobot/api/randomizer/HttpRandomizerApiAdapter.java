@@ -4,11 +4,10 @@ import fr.rawz06.rslfrancobot.api.randomizer.RandomizerApiService.ApiResponse;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedMode;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RandomizerApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +23,7 @@ import java.util.Map;
  */
 @Component
 @Primary
-public class HttpRandomizerApiAdapter implements IRandomizerApi {
+public class HttpRandomizerApiAdapter implements RandomizerApi {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpRandomizerApiAdapter.class);
 

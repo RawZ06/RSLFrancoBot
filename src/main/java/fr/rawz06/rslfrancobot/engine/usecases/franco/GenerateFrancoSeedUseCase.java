@@ -1,8 +1,8 @@
 package fr.rawz06.rslfrancobot.engine.usecases.franco;
 
 import fr.rawz06.rslfrancobot.engine.domain.entities.*;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IPresetRepository;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
+import fr.rawz06.rslfrancobot.engine.domain.ports.PresetRepository;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RandomizerApi;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,14 +14,14 @@ import java.util.List;
 @Component
 public class GenerateFrancoSeedUseCase {
 
-    private final IPresetRepository presetRepository;
-    private final IRandomizerApi randomizerApi;
+    private final PresetRepository presetRepository;
+    private final RandomizerApi randomizerApi;
     private final ValidateSettingsUseCase validateSettingsUseCase;
     private final BuildFinalSettingsUseCase buildFinalSettingsUseCase;
 
     public GenerateFrancoSeedUseCase(
-            IPresetRepository presetRepository,
-            IRandomizerApi randomizerApi,
+            PresetRepository presetRepository,
+            RandomizerApi randomizerApi,
             ValidateSettingsUseCase validateSettingsUseCase,
             BuildFinalSettingsUseCase buildFinalSettingsUseCase
     ) {
@@ -53,7 +53,7 @@ public class GenerateFrancoSeedUseCase {
         // 5. Generate seed via API
         try {
             return randomizerApi.generateSeed(request.mode(), finalSettings);
-        } catch (IRandomizerApi.RandomizerApiException e) {
+        } catch (RandomizerApi.RandomizerApiException e) {
             throw new GenerationException("Error during seed generation", e);
         }
     }

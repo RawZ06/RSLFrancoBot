@@ -5,6 +5,7 @@ import fr.rawz06.rslfrancobot.bot.models.DiscordMessage;
 import fr.rawz06.rslfrancobot.bot.models.DiscordSelectMenu;
 import fr.rawz06.rslfrancobot.engine.domain.entities.Preset;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
+import fr.rawz06.rslfrancobot.engine.usecases.visibility.GetUserAvailableGenerateUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
@@ -24,6 +25,8 @@ public class SeedPresenter {
     @Value("${app.version}")
     private String appVersion;
 
+    private final GetUserAvailableGenerateUseCase getUserAvailableGenerateUseCase;
+
     /**
      * Creates the initial seed mode selection message.
      */
@@ -32,19 +35,24 @@ public class SeedPresenter {
 
         // First row: Classic modes
         List<DiscordButton> classicRow = new ArrayList<>(List.of(
-                new DiscordButton("Franco (classic)", "seed_franco", DiscordButton.Style.PRIMARY),
+                new DiscordButton("Franco (classic)", "seed_franco", DiscordButton.Style.DANGER),
                 new DiscordButton("S8", "seed_s8", DiscordButton.Style.PRIMARY),
-                new DiscordButton("S9", "seed_s9", DiscordButton.Style.PRIMARY)
+                new DiscordButton("S9", "seed_s9", DiscordButton.Style.SUCCESS)
         ));
-        classicRow.add(new DiscordButton("ToT", "seed_tot", DiscordButton.Style.PRIMARY));
+        classicRow.add(new DiscordButton("ToT", "seed_tot", DiscordButton.Style.SUCCESS));
         message.addButtonRow(classicRow);
 
         // Second row: RSL modes
-        List<DiscordButton> rslRow = List.of(
+        List<DiscordButton> rslRow = new ArrayList<>(List.of(
             new DiscordButton("S7 (RSL)", "seed_rsl", DiscordButton.Style.SUCCESS),
-            new DiscordButton("PoT (RSL)", "seed_pot", DiscordButton.Style.DANGER),
-            new DiscordButton("Beginner (RSL)", "seed_beginner", DiscordButton.Style.SECONDARY)
-        );
+            new DiscordButton("PoT (RSL)", "seed_pot", DiscordButton.Style.SECONDARY),
+            new DiscordButton("Beginner (RSL)", "seed_beginner", DiscordButton.Style.SECONDARY),
+            new DiscordButton("S8 (RSL) (unofficial)", "seed_rsl_s8", DiscordButton.Style.DANGER)
+        ));
+
+        if(getUserAvailableGenerateUseCase.available(username, "rot")) {
+            rslRow.add(new DiscordButton("Rupee of Time", "seed_rot", DiscordButton.Style.SECONDARY));
+        }
         message.addButtonRow(rslRow);
 
         return message;

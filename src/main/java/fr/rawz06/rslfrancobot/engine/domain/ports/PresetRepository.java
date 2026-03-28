@@ -9,7 +9,7 @@ import java.util.Optional;
  * Abstraction of preset storage (YAML, JSON, DB, etc.).
  * Implemented in the API Layer.
  */
-public interface IPresetRepository {
+public interface PresetRepository {
     /**
      * Retrieves a preset by name.
      *

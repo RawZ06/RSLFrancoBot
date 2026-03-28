@@ -33,6 +33,9 @@ public class RandomizerApiService {
     @Value("${app.randomizer.api.version.s8}")
     private String versionS8;
 
+    @Value("${app.randomizer.api.version.rsl_s8}")
+    private String versionRslS8;
+
     @Value("${app.randomizer.api.version.s9}")
     private String versionS9;
 
@@ -64,6 +67,7 @@ public class RandomizerApiService {
         return switch (mode) {
             case FRANCO -> versionFranco;
             case RSL, POT, BEGINNER -> versionRsl;
+            case RSL_SEASON8 -> versionRslS8;
             case S8 -> versionS8;
             case S9 -> versionS9;
             case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> versionAllsanity;

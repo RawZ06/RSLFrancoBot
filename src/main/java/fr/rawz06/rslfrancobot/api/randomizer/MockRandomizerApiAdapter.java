@@ -5,10 +5,10 @@ import fr.rawz06.rslfrancobot.api.randomizer.RandomizerApiService.ApiResponse;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedMode;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RandomizerApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -21,7 +21,8 @@ import java.util.UUID;
  * Active only in 'dev' and 'local' profiles.
  */
 @Component
-public class MockRandomizerApiAdapter implements IRandomizerApi {
+//@Primary
+public class MockRandomizerApiAdapter implements RandomizerApi {
 
     private static final Logger logger = LoggerFactory.getLogger(MockRandomizerApiAdapter.class);
 

@@ -1,8 +1,8 @@
 package fr.rawz06.rslfrancobot.engine.usecases.s8;
 
 import fr.rawz06.rslfrancobot.engine.domain.entities.*;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IPresetRepository;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
+import fr.rawz06.rslfrancobot.engine.domain.ports.PresetRepository;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RandomizerApi;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class GenerateS8SeedUseCase {
 
-    private final IPresetRepository presetRepository;
-    private final IRandomizerApi randomizerApi;
+    private final PresetRepository presetRepository;
+    private final RandomizerApi randomizerApi;
 
     public GenerateS8SeedUseCase(
-            IPresetRepository presetRepository,
-            IRandomizerApi randomizerApi
+            PresetRepository presetRepository,
+            RandomizerApi randomizerApi
     ) {
         this.presetRepository = presetRepository;
         this.randomizerApi = randomizerApi;
@@ -34,7 +34,7 @@ public class GenerateS8SeedUseCase {
         // 3. Generate seed via API
         try {
             return randomizerApi.generateSeed(request.mode(), settings);
-        } catch (IRandomizerApi.RandomizerApiException e) {
+        } catch (RandomizerApi.RandomizerApiException e) {
             throw new GenerationException("Error during seed generation", e);
         }
     }

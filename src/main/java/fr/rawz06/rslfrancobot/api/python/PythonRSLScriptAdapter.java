@@ -3,7 +3,7 @@ package fr.rawz06.rslfrancobot.api.python;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.rawz06.rslfrancobot.engine.domain.entities.Preset;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRSLScriptRunner;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RSLScriptRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * Executes RandomSettingsGenerator.py script to generate random settings.
  */
 @Component
-public class PythonRSLScriptAdapter implements IRSLScriptRunner {
+public class PythonRSLScriptAdapter implements RSLScriptRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(PythonRSLScriptAdapter.class);
     private static final Pattern FILENAME_PATTERN = Pattern.compile("Plando File: (.+\\.json)");

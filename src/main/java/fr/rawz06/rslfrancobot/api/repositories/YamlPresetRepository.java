@@ -2,7 +2,7 @@ package fr.rawz06.rslfrancobot.api.repositories;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.rawz06.rslfrancobot.engine.domain.entities.Preset;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IPresetRepository;
+import fr.rawz06.rslfrancobot.engine.domain.ports.PresetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -17,7 +17,7 @@ import java.util.*;
  * Loads presets from YAML and JSON files in resources/data.
  */
 @Repository
-public class YamlPresetRepository implements IPresetRepository {
+public class YamlPresetRepository implements PresetRepository {
 
     private static final Logger logger = LoggerFactory.getLogger(YamlPresetRepository.class);
     private final Map<String, Preset> presets = new HashMap<>();

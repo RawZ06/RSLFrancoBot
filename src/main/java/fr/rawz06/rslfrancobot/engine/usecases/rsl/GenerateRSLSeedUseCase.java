@@ -1,9 +1,9 @@
 package fr.rawz06.rslfrancobot.engine.usecases.rsl;
 
 import fr.rawz06.rslfrancobot.engine.domain.entities.*;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IPresetRepository;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRSLScriptRunner;
+import fr.rawz06.rslfrancobot.engine.domain.ports.PresetRepository;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RandomizerApi;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RSLScriptRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -16,14 +16,14 @@ import java.util.Map;
 @Component
 public class GenerateRSLSeedUseCase {
 
-    private final IPresetRepository presetRepository;
-    private final IRSLScriptRunner rslScriptRunner;
-    private final IRandomizerApi randomizerApi;
+    private final PresetRepository presetRepository;
+    private final RSLScriptRunner rslScriptRunner;
+    private final RandomizerApi randomizerApi;
 
     public GenerateRSLSeedUseCase(
-            IPresetRepository presetRepository,
-            IRSLScriptRunner rslScriptRunner,
-            IRandomizerApi randomizerApi
+            PresetRepository presetRepository,
+            RSLScriptRunner rslScriptRunner,
+            RandomizerApi randomizerApi
     ) {
         this.presetRepository = presetRepository;
         this.rslScriptRunner = rslScriptRunner;
@@ -47,7 +47,7 @@ public class GenerateRSLSeedUseCase {
         SettingsFile generatedSettings;
         try {
             generatedSettings = rslScriptRunner.generateSettings(preset);
-        } catch (IRSLScriptRunner.ScriptExecutionException e) {
+        } catch (RSLScriptRunner.ScriptExecutionException e) {
             throw new GenerationException("Error executing RSL script", e);
         }
 
@@ -69,7 +69,7 @@ public class GenerateRSLSeedUseCase {
         // 3. Generate seed via API
         try {
             return randomizerApi.generateSeed(request.mode(), finalSettings);
-        } catch (IRandomizerApi.RandomizerApiException e) {
+        } catch (RandomizerApi.RandomizerApiException e) {
             throw new GenerationException("Error during seed generation", e);
         }
     }

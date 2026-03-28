@@ -11,6 +11,7 @@ import fr.rawz06.rslfrancobot.bot.handlers.franco.FrancoValidateHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.rsl.BeginnerButtonHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.rsl.PoTButtonHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.rsl.RSLButtonHandler;
+import fr.rawz06.rslfrancobot.bot.handlers.rsl.RSLS8ButtonHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.salad.*;
 import fr.rawz06.rslfrancobot.bot.handlers.std.S8ButtonHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.std.S9ButtonHandler;
@@ -41,6 +42,7 @@ public class JDAEventListener extends ListenerAdapter {
     private final RSLButtonHandler rslButtonHandler;
     private final PoTButtonHandler potButtonHandler;
     private final BeginnerButtonHandler beginnerButtonHandler;
+    private final RSLS8ButtonHandler rslS8ButtonHandler;
     private final S8ButtonHandler s8ButtonHandler;
     private final S9ButtonHandler s9ButtonHandler;
     private final AllsanityErDecoupledButtonHandler allsanityErDecoupledButtonHandler;
@@ -109,6 +111,7 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_rsl" -> rslButtonHandler.handle(interaction);
                 case "seed_pot" -> potButtonHandler.handle(interaction);
                 case "seed_beginner" -> beginnerButtonHandler.handle(interaction);
+                case "seed_rsl_s8", "seed_rot" -> rslS8ButtonHandler.handle(interaction);
                 case "seed_s8" -> s8ButtonHandler.handle(interaction);
                 case "seed_s9" -> s9ButtonHandler.handle(interaction);
                 case "seed_tot" -> totButtonHandler.handle(interaction);

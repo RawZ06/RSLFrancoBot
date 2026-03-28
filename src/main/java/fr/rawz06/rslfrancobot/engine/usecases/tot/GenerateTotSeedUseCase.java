@@ -4,8 +4,8 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.Preset;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedRequest;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IPresetRepository;
-import fr.rawz06.rslfrancobot.engine.domain.ports.IRandomizerApi;
+import fr.rawz06.rslfrancobot.engine.domain.ports.PresetRepository;
+import fr.rawz06.rslfrancobot.engine.domain.ports.RandomizerApi;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class GenerateTotSeedUseCase {
 
-    private final IPresetRepository presetRepository;
-    private final IRandomizerApi randomizerApi;
+    private final PresetRepository presetRepository;
+    private final RandomizerApi randomizerApi;
 
     public GenerateTotSeedUseCase(
-            IPresetRepository presetRepository,
-            IRandomizerApi randomizerApi
+            PresetRepository presetRepository,
+            RandomizerApi randomizerApi
     ) {
         this.presetRepository = presetRepository;
         this.randomizerApi = randomizerApi;
@@ -37,7 +37,7 @@ public class GenerateTotSeedUseCase {
         // 3. Generate seed via API
         try {
             return randomizerApi.generateSeed(request.mode(), settings);
-        } catch (IRandomizerApi.RandomizerApiException e) {
+        } catch (RandomizerApi.RandomizerApiException e) {
             throw new GenerationException("Error during seed generation", e);
         }
     }

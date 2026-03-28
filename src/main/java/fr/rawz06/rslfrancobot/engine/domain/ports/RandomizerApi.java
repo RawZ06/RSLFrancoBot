@@ -9,7 +9,7 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
  * Abstraction of communication with ootrandomizer.com.
  * Implemented in the API Layer.
  */
-public interface IRandomizerApi {
+public interface RandomizerApi {
     /**
      * Generates a seed on ootrandomizer.com.
      *

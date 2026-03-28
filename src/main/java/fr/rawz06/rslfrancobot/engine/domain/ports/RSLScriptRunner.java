@@ -8,7 +8,7 @@ import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
  * Abstraction of the random generation script call.
  * Implemented in the API Layer.
  */
-public interface IRSLScriptRunner {
+public interface RSLScriptRunner {
     /**
      * Executes the Python script to generate RSL settings.
      *
