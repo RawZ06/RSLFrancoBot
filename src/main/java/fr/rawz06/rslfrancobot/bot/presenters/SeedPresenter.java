@@ -123,7 +123,7 @@ public class SeedPresenter {
         }
 
         content.append("\n\n");
-        content.append("🤖Bot Version: ").append(appVersion);
+        content.append("🤖Bot Version: ").append(appVersion.split("-")[0]);
 
         return new DiscordMessage(content.toString());
     }
@@ -155,7 +155,7 @@ public class SeedPresenter {
         }
 
         content.append("\n\n");
-        content.append("🤖Bot Version: ").append(appVersion);
+        content.append("🤖Bot Version: ").append(appVersion.split("-")[0]);
 
         return new DiscordMessage(content.toString());
     }
