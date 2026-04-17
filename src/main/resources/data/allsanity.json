@@ -113,7 +113,13 @@
   "shuffle_beehives": true,
   "shuffle_grass": true,
   "shuffle_wonderitems": true,
-  "shuffle_fairies": true,
+  "shuffle_fairies": [
+    "GossipFairy",
+    "ButterflyFairy",
+    "SunsStormsFairy",
+    "FountainFairy",
+    "BeanPlantFairy"
+  ],
   "shuffle_kokiri_sword": true,
   "shuffle_ocarinas": true,
   "shuffle_gerudo_card": true,
