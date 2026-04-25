@@ -48,6 +48,7 @@ public class SeedService {
                 case FRANCO -> generateFrancoSeedUseCase.execute(request);
                 case RSL, POT, BEGINNER -> generateRSLSeedUseCase.execute(request);
                 case RSL_SEASON8 -> generateRSLSeedFromAPIUseCase.execute(request, "rsl_season8");
+                case ROT -> generateRSLSeedFromAPIUseCase.execute(request, "rsl_rupee");
                 case S8 -> generateS8SeedUseCase.execute(request);
                 case S9 -> generateS9SeedUseCase.execute(request);
                 case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> generateAllsanitySeedUseCase.execute(request);
