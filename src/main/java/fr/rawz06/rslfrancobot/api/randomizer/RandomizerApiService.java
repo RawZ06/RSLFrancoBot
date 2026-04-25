@@ -67,7 +67,7 @@ public class RandomizerApiService {
         return switch (mode) {
             case FRANCO -> versionFranco;
             case RSL, POT, BEGINNER -> versionRsl;
-            case RSL_SEASON8 -> versionRslS8;
+            case RSL_SEASON8, ROT -> versionRslS8;
             case S8 -> versionS8;
             case S9 -> versionS9;
             case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> versionAllsanity;
