@@ -1,91 +1,35 @@
-name: Auto Increment Version
+name: CI
 
 on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
+  pull_request:
 
 jobs:
-  increment-version:
-    runs-on: ubuntu-latest
+  ci:
+    if: github.ref != 'refs/heads/main'
+    uses: RawZ06-Studio/.github/.github/workflows/maven-ci.yml@main
+    secrets:
+      NEXUS_LOGIN: ${{ secrets.NEXUS_LOGIN }}
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
+  release:
+    if: github.ref == 'refs/heads/main'
+    uses: RawZ06-Studio/.github/.github/workflows/maven-ci-release.yml@main
+    secrets:
+      NEXUS_LOGIN: ${{ secrets.NEXUS_LOGIN }}
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
-
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Get current version
-        id: get-version
-        run: |
-          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          echo "📦 Current version: $CURRENT_VERSION"
-
-      - name: Check if SNAPSHOT
-        id: check
-        run: |
-          CURRENT="${{ steps.get-version.outputs.current_version }}"
-          if [[ ! "$CURRENT" =~ -SNAPSHOT$ ]]; then
-            echo "⚠️ Not a SNAPSHOT version, skipping"
-            echo "skip=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          RELEASE_VERSION="${CURRENT%-SNAPSHOT}"
-          echo "skip=false" >> $GITHUB_OUTPUT
-          echo "release_version=$RELEASE_VERSION" >> $GITHUB_OUTPUT
-          echo "🚀 Release version: $RELEASE_VERSION"
-
-      - name: Set release version
-        if: steps.check.outputs.skip == 'false'
-        run: |
-          mvn versions:set -DnewVersion=${{ steps.check.outputs.release_version }} -DgenerateBackupPoms=false
-
-      - name: Commit release version
-        if: steps.check.outputs.skip == 'false'
-        run: |
-          git add pom.xml
-          git commit -m "🔖 Release version ${{ steps.check.outputs.release_version }} [skip ci]"
-          git push
-
-      - name: Create and push tag
-        if: steps.check.outputs.skip == 'false'
-        run: |
-          git tag -a "v${{ steps.check.outputs.release_version }}" -m "Release version ${{ steps.check.outputs.release_version }}"
-          git push origin "v${{ steps.check.outputs.release_version }}"
-
-      - name: Deploy to Dokploy
-        if: steps.check.outputs.skip == 'false'
-        run: |
-          echo "🚀 Triggering Dokploy deployment..."
-          curl -X POST \
-            "https://${{ secrets.DOKPLOY_DOMAIN }}/api/application.deploy" \
-            -H "accept: application/json" \
-            -H "x-api-key: ${{ secrets.DOKPLOY_API_KEY }}" \
-            -H "Content-Type: application/json" \
-            -d "{\"applicationId\": \"${{ secrets.DOKPLOY_APP_ID }}\"}"
-          echo "✅ Deployment triggered"
-
-      - name: Prepare next dev version
-        if: steps.check.outputs.skip == 'false'
-        run: |
-          IFS='.' read -ra V <<< "${{ steps.check.outputs.release_version }}"
-          NEXT="${V[0]}.${V[1]}.$((V[2] + 1))-SNAPSHOT"
-          mvn versions:set -DnewVersion=$NEXT -DgenerateBackupPoms=false
-          git add pom.xml
-          git commit -m "🔧 Prepare next development version $NEXT [skip ci]"
-          git push
-          echo "✅ Released ${{ steps.check.outputs.release_version }}, next: $NEXT"
+  docker:
+    if: startsWith(github.ref, 'refs/tags/v')
+    uses: RawZ06-Studio/.github/.github/workflows/docker-build-push.yml@main
+    with:
+      image_name: rslfrancobot
+      dokploy_app_id: yz6yBH0MMuChV1NpMPyqB
+    secrets:
+      NEXUS_LOGIN: ${{ secrets.NEXUS_LOGIN }}
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+      DOKPLOY_TOKEN: ${{ secrets.DOKPLOY_TOKEN }}
