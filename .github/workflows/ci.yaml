@@ -19,6 +19,8 @@ jobs:
   release:
     if: github.ref == 'refs/heads/main'
     uses: RawZ06-Studio/.github/.github/workflows/maven-ci-release.yml@main
+    permissions:
+      contents: write
     secrets:
       NEXUS_LOGIN: ${{ secrets.NEXUS_LOGIN }}
       NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
