@@ -13,3 +13,20 @@ jobs:
     secrets:
       NEXUS_LOGIN: ${{ secrets.NEXUS_LOGIN }}
       NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+
+  docker:
+    needs: release
+    uses: RawZ06-Studio/.github/.github/workflows/docker-build-push.yml@main
+    with:
+      image_name: rslfrancobot
+      dokploy_app_id: yz6yBH0MMuChV1NpMPyqB
+    secrets:
+      NEXUS_LOGIN: ${{ secrets.NEXUS_LOGIN }}
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+      DOKPLOY_TOKEN: ${{ secrets.DOKPLOY_TOKEN }}
+
+  snapshot:
+    needs: docker
+    uses: RawZ06-Studio/.github/.github/workflows/maven-ci-snapshot.yml@main
+    permissions:
+      contents: write
