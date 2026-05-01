@@ -35,6 +35,7 @@ public class JDAEventListener extends ListenerAdapter {
     private final SeedCommandHandler seedCommandHandler;
     private final SaladCommandHandler saladCommandHandler;
     private final AllCommandHandler allCommandHandler;
+    private final InfoCommandHandler infoCommandHandler;
     private final FrancoButtonHandler francoButtonHandler;
     private final RSLButtonHandler rslButtonHandler;
     private final PoTButtonHandler potButtonHandler;
@@ -76,6 +77,10 @@ public class JDAEventListener extends ListenerAdapter {
                 case "all" -> {
                     var interaction = JDASlashCommandAdapter.from(event);
                     allCommandHandler.handle(interaction);
+                }
+                case "info" -> {
+                    var interaction = JDASlashCommandAdapter.from(event);
+                    infoCommandHandler.handle(interaction);
                 }
             }
         } catch (Exception e) {
