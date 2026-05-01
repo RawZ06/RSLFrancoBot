@@ -2,36 +2,13 @@ name: CI
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
-    tags:
-      - 'v*'
   pull_request:
 
 jobs:
   ci:
-    if: github.ref != 'refs/heads/main'
     uses: RawZ06-Studio/.github/.github/workflows/maven-ci.yml@main
     secrets:
       NEXUS_LOGIN: ${{ secrets.NEXUS_LOGIN }}
       NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
-
-  release:
-    if: github.ref == 'refs/heads/main'
-    uses: RawZ06-Studio/.github/.github/workflows/maven-ci-release.yml@main
-    permissions:
-      contents: write
-    secrets:
-      NEXUS_LOGIN: ${{ secrets.NEXUS_LOGIN }}
-      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
-
-  docker:
-    if: startsWith(github.ref, 'refs/tags/v')
-    uses: RawZ06-Studio/.github/.github/workflows/docker-build-push.yml@main
-    with:
-      image_name: rslfrancobot
-      dokploy_app_id: yz6yBH0MMuChV1NpMPyqB
-    secrets:
-      NEXUS_LOGIN: ${{ secrets.NEXUS_LOGIN }}
-      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
-      DOKPLOY_TOKEN: ${{ secrets.DOKPLOY_TOKEN }}
