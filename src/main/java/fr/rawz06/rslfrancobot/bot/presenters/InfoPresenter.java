@@ -25,31 +25,38 @@ public class InfoPresenter {
 
     public DiscordMessage presentInfo() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ℹ️ **Informations du Bot**\n\n");
-        
-        sb.append("**Versions système :**\n");
-        sb.append("- Bot : `").append(botVersion).append("`\n");
-        sb.append("- Spring Boot : `").append(SpringBootVersion.getVersion()).append("`\n");
-        sb.append("- Java : `").append(System.getProperty("java.version")).append("`\n\n");
-        
-        sb.append("**Versions des Générateurs :**\n");
-        sb.append("- RSL : `").append(versionConfig.getRsl()).append("`\n");
-        sb.append("- RSL S8 : `").append(versionConfig.getRsl_s8()).append("`\n");
-        sb.append("- S8 : `").append(versionConfig.getS8()).append("`\n");
-        sb.append("- S9 : `").append(versionConfig.getS9()).append("`\n");
-        sb.append("- Franco : `").append(versionConfig.getFranco()).append("`\n");
-        sb.append("- ToT : `").append(versionConfig.getTot()).append("`\n");
-        sb.append("- Enemy Salad : `").append(versionConfig.getEnemySalad()).append("`\n");
-        sb.append("- Allsanity : `").append(versionConfig.getAllsanity()).append("`\n");
-        sb.append("- Salad : `").append(versionConfig.getSalad()).append("`\n\n");
-        
+        sb.append("ℹ️ **Bot Information**\n\n");
+
+        sb.append("**System Versions:**\n");
+        sb.append("- Bot: `").append(botVersion).append("`\n");
+        sb.append("- Spring Boot: `").append(SpringBootVersion.getVersion()).append("`\n");
+        sb.append("- Java: `").append(System.getProperty("java.version")).append("`\n\n");
+
+        sb.append("**Generator Versions:**\n\n");
+        sb.append("__Classic Versions__\n");
+        sb.append("- S8: `").append(versionConfig.getS8()).append("`\n");
+        sb.append("- S9: `").append(versionConfig.getS9()).append("`\n");
+        sb.append("- ToT: `").append(versionConfig.getTot()).append("`\n");
+        sb.append("- Franco: `").append(versionConfig.getFranco()).append("`\n\n");
+
+        sb.append("__RSL Versions__\n");
+        sb.append("- RSL: `").append(versionConfig.getRsl()).append("`\n");
+        sb.append("- RSL S8 (unofficial): `").append(versionConfig.getRsl_s8()).append("`\n\n");
+
+        sb.append("__Salad Versions__\n");
+        sb.append("- Enemy Salad: `").append(versionConfig.getEnemySalad()).append("`\n");
+        sb.append("- Salad: `").append(versionConfig.getSalad()).append("`\n\n");
+
+        sb.append("__All Sanity__\n");
+        sb.append("- Enemizer Allsanity: `").append(versionConfig.getAllsanity()).append("`\n");
+
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
         long startTime = rb.getStartTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault());
         String formattedStartTime = formatter.format(Instant.ofEpochMilli(startTime));
-        
-        sb.append("**Démarré le :** `").append(formattedStartTime).append("`\n");
-        
+
+        sb.append("**Started at:** `").append(formattedStartTime).append("`\n");
+
         return new DiscordMessage(sb.toString());
     }
 }
