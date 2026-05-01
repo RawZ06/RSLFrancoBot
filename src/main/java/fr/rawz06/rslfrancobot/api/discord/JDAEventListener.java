@@ -10,6 +10,7 @@ import fr.rawz06.rslfrancobot.bot.handlers.franco.FrancoSelectMenuHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.franco.FrancoValidateHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.rsl.*;
 import fr.rawz06.rslfrancobot.bot.handlers.salad.*;
+import fr.rawz06.rslfrancobot.bot.handlers.std.MixedPoolButtonHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.std.S8ButtonHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.std.S9ButtonHandler;
 import fr.rawz06.rslfrancobot.bot.handlers.std.TotButtonHandler;
@@ -58,6 +59,7 @@ public class JDAEventListener extends ListenerAdapter {
     private final SaladMixButtonHandler saladMixButtonHandler;
     private final SaladAllButtonHandler saladAllButtonHandler;
     private final TotButtonHandler totButtonHandler;
+    private final MixedPoolButtonHandler mixedPoolButtonHandler;
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
@@ -119,6 +121,7 @@ public class JDAEventListener extends ListenerAdapter {
                 case "seed_s8" -> s8ButtonHandler.handle(interaction);
                 case "seed_s9" -> s9ButtonHandler.handle(interaction);
                 case "seed_tot" -> totButtonHandler.handle(interaction);
+                case "seed_mixed" -> mixedPoolButtonHandler.handle(interaction);
                 case "seed_allsanity_er_decoupled" -> allsanityErDecoupledButtonHandler.handle(interaction);
                 case "seed_allsanity_er" -> allsanityErButtonHandler.handle(interaction);
                 case "seed_allsanity_only" -> allsanityOnlyButtonHandler.handle(interaction);

@@ -39,6 +39,7 @@ public class YamlPresetRepository implements PresetRepository {
             loadAllsanityPreset();
             loadSaladPreset();
             loadTotPreset();
+            loadMixedPreset();
             logger.info("Presets loaded successfully: {}", presets.keySet());
         } catch (Exception e) {
             logger.error("Error loading presets", e);
@@ -119,6 +120,17 @@ public class YamlPresetRepository implements PresetRepository {
             presets.put("tot", s9Preset);
         } catch (Exception e) {
             logger.error("Error loading Tot preset", e);
+        }
+    }
+
+    private void loadMixedPreset() {
+        // For Mixed: fixed settings from mixed.json, no user options
+        try {
+            Map<String, Object> baseSettings = loadJsonFile("data/mixed.json");
+            Preset mixedPreset = new Preset("mixed", baseSettings, List.of());
+            presets.put("mixed", mixedPreset);
+        } catch (Exception e) {
+            logger.error("Error loading Mixed preset", e);
         }
     }
 

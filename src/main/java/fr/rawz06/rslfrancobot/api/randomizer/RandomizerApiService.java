@@ -49,6 +49,7 @@ public class RandomizerApiService {
             case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> versionConfig.getAllsanity();
             case SALAD_NATURE, SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> versionConfig.getSalad();
             case TOT -> versionConfig.getTot();
+            case MIXED -> versionConfig.getMixed();
             case SALAD_ENEMY -> versionConfig.getEnemySalad();
         };
     }

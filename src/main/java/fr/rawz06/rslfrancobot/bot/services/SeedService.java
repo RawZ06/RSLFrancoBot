@@ -9,6 +9,7 @@ import fr.rawz06.rslfrancobot.engine.usecases.allsanity.GenerateAllsanitySeedUse
 import fr.rawz06.rslfrancobot.engine.usecases.franco.GenerateFrancoSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.rsl.GenerateRSLSeedFromAPIUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.rsl.GenerateRSLSeedUseCase;
+import fr.rawz06.rslfrancobot.engine.usecases.mixed.GenerateMixedSeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.s8.GenerateS8SeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.s9.GenerateS9SeedUseCase;
 import fr.rawz06.rslfrancobot.engine.usecases.salad.GenerateSaladSeedUseCase;
@@ -36,6 +37,7 @@ public class SeedService {
     private final GenerateSaladSeedUseCase generateSaladSeedUseCase;
     private final PresetRepository presetRepository;
     private final GenerateTotSeedUseCase generateTotSeedUseCase;
+    private final GenerateMixedSeedUseCase generateMixedSeedUseCase;
 
     /**
      * Generates a seed according to the requested mode.
@@ -54,12 +56,13 @@ public class SeedService {
                 case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> generateAllsanitySeedUseCase.execute(request);
                 case SALAD_NATURE, SALAD_ENEMY, SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> generateSaladSeedUseCase.execute(request);
                 case TOT -> generateTotSeedUseCase.execute(request);
+                case MIXED -> generateMixedSeedUseCase.execute(request);
             };
         } catch (GenerateFrancoSeedUseCase.GenerationException | GenerateRSLSeedUseCase.GenerationException |
                  GenerateRSLSeedFromAPIUseCase.GenerationException |
                  GenerateS8SeedUseCase.GenerationException | GenerateS9SeedUseCase.GenerationException |
                  GenerateAllsanitySeedUseCase.GenerationException | GenerateSaladSeedUseCase.GenerationException |
-                 GenerateTotSeedUseCase.GenerationException e) {
+                 GenerateTotSeedUseCase.GenerationException | GenerateMixedSeedUseCase.GenerationException e) {
             throw new SeedGenerationException("Error during seed generation", e);
         }
     }

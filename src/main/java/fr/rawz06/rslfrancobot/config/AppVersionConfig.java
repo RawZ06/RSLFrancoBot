@@ -14,6 +14,7 @@ public class AppVersionConfig {
     private String s9;
     private String franco;
     private String tot;
+    private String mixed;
     private String enemySalad;
     private String allsanity;
     private String salad;

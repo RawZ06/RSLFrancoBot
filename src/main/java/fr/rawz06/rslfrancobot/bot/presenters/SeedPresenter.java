@@ -40,6 +40,7 @@ public class SeedPresenter {
                 new DiscordButton("S9", "seed_s9", DiscordButton.Style.SUCCESS)
         ));
         classicRow.add(new DiscordButton("ToT", "seed_tot", DiscordButton.Style.SUCCESS));
+        classicRow.add(new DiscordButton("Mixed Pool S5", "seed_mixed", DiscordButton.Style.SUCCESS));
         message.addButtonRow(classicRow);
 
         // Second row: RSL modes

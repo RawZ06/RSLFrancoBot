@@ -37,6 +37,7 @@ public class InfoPresenter {
         sb.append("- S8: `").append(versionConfig.getS8()).append("`\n");
         sb.append("- S9: `").append(versionConfig.getS9()).append("`\n");
         sb.append("- ToT: `").append(versionConfig.getTot()).append("`\n");
+        sb.append("- Mixed Pool: `").append(versionConfig.getMixed()).append("`\n");
         sb.append("- Franco: `").append(versionConfig.getFranco()).append("`\n\n");
 
         sb.append("__RSL Versions__\n");
