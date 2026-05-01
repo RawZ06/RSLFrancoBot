@@ -45,7 +45,8 @@ public class BotRunner {
             jda.updateCommands().addCommands(
                     Commands.slash("seed", "Generate a classic OoT Randomizer seed"),
                     Commands.slash("salad", "Generate a salad OoT Randomizer seed"),
-                    Commands.slash("all", "Generate a allsanity OoT Randomizer seed")
+                    Commands.slash("all", "Generate a allsanity OoT Randomizer seed"),
+                    Commands.slash("info", "Display bot information")
             ).queue();
 
             logger.info("Discord bot started successfully!");

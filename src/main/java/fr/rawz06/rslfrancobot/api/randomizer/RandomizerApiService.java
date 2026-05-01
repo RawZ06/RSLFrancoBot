@@ -1,6 +1,7 @@
 package fr.rawz06.rslfrancobot.api.randomizer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.rawz06.rslfrancobot.config.AppVersionConfig;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedMode;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SeedResult;
 import fr.rawz06.rslfrancobot.engine.domain.entities.SettingsFile;
@@ -27,37 +28,12 @@ public class RandomizerApiService {
     @Value("${app.randomizer.api.key}")
     private String apiKey;
 
-    @Value("${app.randomizer.api.version.rsl}")
-    private String versionRsl;
-
-    @Value("${app.randomizer.api.version.s8}")
-    private String versionS8;
-
-    @Value("${app.randomizer.api.version.rsl_s8}")
-    private String versionRslS8;
-
-    @Value("${app.randomizer.api.version.s9}")
-    private String versionS9;
-
-    @Value("${app.randomizer.api.version.franco}")
-    private String versionFranco;
-
-    @Value("${app.randomizer.api.version.allsanity}")
-    private String versionAllsanity;
-
-    @Value("${app.randomizer.api.version.salad}")
-    private String versionSalad;
-
-    @Value("${app.randomizer.api.version.tot}")
-    private String versionTot;
-
-    @Value("${app.randomizer.api.version.enemySalad}")
-    private String versionEnemy;
-
+    private final AppVersionConfig versionConfig;
     private final ObjectMapper objectMapper;
 
-    public RandomizerApiService(ObjectMapper objectMapper) {
+    public RandomizerApiService(ObjectMapper objectMapper, AppVersionConfig versionConfig) {
         this.objectMapper = objectMapper;
+        this.versionConfig = versionConfig;
     }
 
     /**
@@ -65,15 +41,15 @@ public class RandomizerApiService {
      */
     public String getVersionForMode(SeedMode mode) {
         return switch (mode) {
-            case FRANCO -> versionFranco;
-            case RSL, POT, BEGINNER -> versionRsl;
-            case RSL_SEASON8, ROT -> versionRslS8;
-            case S8 -> versionS8;
-            case S9 -> versionS9;
-            case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> versionAllsanity;
-            case SALAD_NATURE, SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> versionSalad;
-            case TOT -> versionTot;
-            case SALAD_ENEMY -> versionEnemy;
+            case FRANCO -> versionConfig.getFranco();
+            case RSL, POT, BEGINNER -> versionConfig.getRsl();
+            case RSL_SEASON8, ROT -> versionConfig.getRsl_s8();
+            case S8 -> versionConfig.getS8();
+            case S9 -> versionConfig.getS9();
+            case ALLSANITY_ER_DECOUPLED, ALLSANITY_ER, ALLSANITY_ONLY -> versionConfig.getAllsanity();
+            case SALAD_NATURE, SALAD_RUPEES, SALAD_DUNGEONS, SALAD_SONGS, SALAD_MIX, SALAD_ALL -> versionConfig.getSalad();
+            case TOT -> versionConfig.getTot();
+            case SALAD_ENEMY -> versionConfig.getEnemySalad();
         };
     }
 
